@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+  
+
+/* ::-webkit-scrollbar{display: none;} */
+::-webkit-scrollbar {
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #535353;
+    border-radius: 15px;
+    cursor: grab;
+  }
+  
+  ::-webkit-scrollbar-thumb:active {
+    cursor: grabbing;
+  }
+  
+  ::-webkit-scrollbar-track-piece {
+    background-color: rgb(229, 229, 229);
+    border-radius: 20px;
+  }
+  
+  .profile-scrollbar::-webkit-scrollbar{
+    display: none;
+  }
+  
+  @media screen and (max-width:460px){
+    ::-webkit-scrollbar{
+      display: none;
+    }
+  }
+
+  ::-webkit-search-cancel-button{
+    display: none;
+  }
