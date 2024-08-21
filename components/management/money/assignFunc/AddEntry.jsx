@@ -30,42 +30,116 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button";
 import { RxReset } from "react-icons/rx";
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
+import { useDispatch } from "react-redux";
+import { fetchInvoiceData } from "@/features/moneyManagement";
+import { format } from "date-fns";
+import { useToast } from "@/components/ui/use-toast";
 
 
 
 const AddEntry = () => {
+    const [addEntryModal, setAddEntryModal] = useState(false);
+    const [transferDate, setTransferDate] = useState(new Date());
+    const [name, setName] = useState("");
+    const [status, setStatus] = useState("");
+    const [amount, setAmount] = useState("");
+    const [description, setDescription] = useState("");
+    const { toast } = useToast();
 
-    const [transferDate, setTransferDate] = useState(Date | undefined > (new Date()))
+    const secretKey = "eyJh_eyJzdWIIk6yJV_a4fwpMeJf3iwiaWF0IjoxNTE2MjM5MD6POciObGlKI6IkpvaG4gRG9lNiIsInR5cCI63OIkpXVCJ9iJxwRJSMeKKF2QTYIyfQ_Sf1iOiIxMjM0NTdQssw5c"; // Replace with your secret key
+    const mydispatch = useDispatch();
 
+    const formatAmount = (value) => {
+        // Remove any non-digit characters (like commas)
+        let numericValue = value.replace(/[^0-9]/g, "");
+
+        // Format the number as a currency with commas
+        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+
+    const handleAmountChange = (e) => {
+        let rawValue = e.target.value.replace(/,/g, ""); // Remove existing commas
+        // Limit the input to 5 digits
+        if (rawValue.length > 5) {
+            return; // Exit the function if more than 5 digits
+        }
+        const formattedValue = formatAmount(rawValue);
+        setAmount(formattedValue);
+    };
+
+
+    const resetFormData = () => {
+        setTransferDate(new Date());
+        setName("");
+        setStatus("")
+        setAmount("")
+        setDescription("")
+
+        toast({
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+        })
+
+    }
+
+
+    const handleSave = async () => {
+
+        const formattedDate = format(transferDate, 'dd-MM-yyyy');
+
+        const formData = {
+            name,
+            transferDate: formattedDate,
+            status,
+            amount,
+            description,
+        };
+
+        console.log(formData);
+
+        // const response = await fetch("https://silver-chough-461551.hostingersite.com/api/addMoneyEntry.php", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": `Bearer ${secretKey}`,
+        //     },
+        //     body: JSON.stringify(formData),
+        // });
+
+        // const result = await response.json();
+        // if (result.success) {
+        //     mydispatch(fetchInvoiceData());
+        //     setAddEntryModal(false);
+        //     console.log(result, 'and' , result.success);
+        // } else {
+
+        // }
+    };
 
     return (
-        <AlertDialog>
+        <AlertDialog defaultOpen={addEntryModal} open={addEntryModal} onOpenChange={setAddEntryModal}>
             <AlertDialogTrigger asChild>
                 <Button className="transition-all duration-100 active:scale-90"><TbCopyPlusFilled className='h-4 w-4 mr-2' /> Add Entry</Button>
             </AlertDialogTrigger>
             <AlertDialogContent className=" max-w-[51vw] flex flex-col">
-                {/* ---------------------- back button ---------------------- */}
                 <AlertDialogCancel className="absolute left-4 top-4 transition-all duration-100 active:scale-90 border-dark hover:bg-dark hover:text-white h-8 rounded-md px-3 text-xs"><IoMdArrowRoundBack className="h-4 w-4 mr-1 -ms-2" /> Back</AlertDialogCancel>
-                {/* ---------------------- back button ---------------------- */}
 
-                {/* --------------------------- title part --------------------- */}
                 <div className="h-max w-full flex flex-col justify-start items-center pb-2 border-zinc-200 border-b mb-2">
                     <AlertDialogTitle className="text-3xl mt-1 font-extrabold text-zinc-800 mb-3">Add New Entry</AlertDialogTitle>
                     <AlertDialogDescription className="w-full px-12 text-center tracking-wide">
-                        Fill all of the given fields for adding a new record for the money flow traking. All of the fields are important so each fields should be filled carefully.
+                        Fill all of the given fields for adding a new record for the money flow tracking.
                     </AlertDialogDescription>
                 </div>
-                {/* --------------------------- title part --------------------- */}
 
-                {/* ------------------------ input fields ------------------------- */}
                 <div className="h-full w-full flex flex-col gap-7">
                     <div className="flex justify-between gap-7">
                         <div className="grid w-full max-w-sm items-center gap-2">
-                            <Label htmlFor="email" className="text-sm">Person's name</Label>
-                            <Input type="email" id="email" placeholder="Enter name here" />
+                            <Label htmlFor="name" className="text-sm">Person's name</Label>
+                            <Input type="text" id="name" placeholder="Enter name here" value={name} onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div className="grid w-full max-w-sm items-center gap-2">
-                            <Label htmlFor="email" className="text-sm">Date of transfer</Label>
+                            <Label htmlFor="date" className="text-sm">Date of transfer</Label>
                             <Popover>
                                 <PopoverTrigger className="relative flex-1 grow-0">
                                     <div className="relative ml-auto flex-1 md:grow-0">
@@ -73,7 +147,7 @@ const AddEntry = () => {
                                         <DivButton
                                             variant="outline"
                                             className="w-full h-10 relative top-1 font-normal text-zinc-500 rounded-lg bg-background pl-9 cursor-pointer justify-start ps-3"
-                                        >Pick a date</DivButton>
+                                        >{transferDate.toLocaleDateString()}</DivButton>
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent className="p-0 border-0 w-64">
@@ -89,36 +163,35 @@ const AddEntry = () => {
                     </div>
                     <div className="flex justify-between gap-7">
                         <div className="grid w-full max-w-sm items-center gap-2">
-                            <Label htmlFor="email">Status</Label>
-                            <Select>
+                            <Label htmlFor="status">Status</Label>
+                            <Select value={status} onValueChange={setStatus}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Choose a status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="sended"><div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-green-700"/> Sended</div></SelectItem>
-                                    <SelectItem value="recieved"><div className="flex items-center gap-1"><GiReceiveMoney className="h-5 w-5 text-green-700"/> Recieved</div></SelectItem>
-                                    <SelectItem value="spent"><div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-green-700"/> Spent</div></SelectItem>
+                                    <SelectItem value="sended"><div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-green-700" /> Sended</div></SelectItem>
+                                    <SelectItem value="received"><div className="flex items-center gap-1"><GiReceiveMoney className="h-5 w-5 text-green-700" /> Received</div></SelectItem>
+                                    <SelectItem value="spent"><div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-green-700" /> Spent</div></SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="grid w-full max-w-sm items-center gap-2">
-                            <Label htmlFor="email">Amount </Label>
-                            <Input type="email" id="email" placeholder="In Rs." />
+                            <Label htmlFor="amount">Amount</Label>
+                            <Input type="text" id="amount" placeholder="In Rs." value={amount} onChange={handleAmountChange} />
                         </div>
                     </div>
                     <div className="grid w-full items-center gap-2">
-                        <Label htmlFor="email">Description </Label>
-                        <Textarea className="h-20" placeholder="Write message here" />
+                        <Label htmlFor="description">Description</Label>
+                        <Textarea className="h-20" placeholder="Write message here" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
                     <div className="w-full flex justify-end gap-3">
-                        <Button className="transition-all duration-100 active:scale-90" variant="outline"><RxReset className="h-4 w-4 mr-1 -ms-1"/> Reset</Button>
-                        <Button className="transition-all duration-100 active:scale-90"><IoIosSave className="h-5 w-5 mr-1 -ms-1"/> Save</Button>
+                        <Button onClick={resetFormData} className="transition-all duration-100 active:scale-90" variant="outline"><RxReset className="h-4 w-4 mr-1 -ms-1" /> Reset</Button>
+                        <Button className="transition-all duration-100 active:scale-90" onClick={handleSave}><IoIosSave className="h-5 w-5 mr-1 -ms-1" /> Save</Button>
                     </div>
                 </div>
-                {/* ------------------------ input fields ------------------------- */}
             </AlertDialogContent>
         </AlertDialog>
     )
 }
 
-export default AddEntry
+export default AddEntry;

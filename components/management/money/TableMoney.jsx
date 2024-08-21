@@ -21,8 +21,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchInvoiceData } from "@/features/moneyManagement";
 import { Badge } from "@/components/ui/badge"
 import { RiCloseCircleFill } from "react-icons/ri";
-
-
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import EditEntryMoney from "./assignFunc/EditEntryMoney";
+import { Button } from "@/components/ui/button";
 
 
 const TableMoney = () => {
@@ -131,15 +139,15 @@ const TableMoney = () => {
             </div>
 
             <div className='bg-white relative dark:bg-dark rounded-lg shadow-md w-full overflow-y-auto border-b-[12px] border-b-white'>
-                {filterData.length > 1 ?
+                {filterData.length > 0 ?
                     <Table className="h-[62vh] rounded-md">
                         <TableHeader className="sticky top-0 h-12 shadow-md z-10">
                             <TableRow className="bg-white hover:bg-white shadow-sm">
                                 <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
                                 <TableHead>S No.</TableHead>
                                 <TableHead>Name</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Status</TableHead>
+                                <TableHead className="w-24">Date</TableHead>
+                                <TableHead className="w-28">Status</TableHead>
                                 <TableHead>Details</TableHead>
                                 <TableHead>Amount</TableHead>
                                 <TableHead></TableHead>
@@ -148,10 +156,10 @@ const TableMoney = () => {
                         <TableBody>
                             {filterData.map((invoice, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
-                                    <TableCell className="w-20 font-bold">{invoice.id}</TableCell>
+                                    <TableCell className=""><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
+                                    <TableCell className="font-bold">{invoice.id}</TableCell>
                                     <TableCell>{invoice.name}</TableCell>
-                                    <TableCell>{invoice.date}</TableCell>
+                                    <TableCell className="">{invoice.date}</TableCell>
                                     <TableCell>
                                         <div className="flex justify-center">
                                             {invoice.status === 'sended' && <Badge variant="destructive" className="">{invoice.status}</Badge>}
@@ -162,15 +170,26 @@ const TableMoney = () => {
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                <TableCell className="w-[32%]">{invoice.details.length > 40 ? invoice.details.slice(0, 40) + "..." : invoice.details}</TableCell>
+                                                <TableCell>{invoice.details.length > 66 ? invoice.details.slice(0, 66) + "..." : invoice.details}</TableCell>
                                             </TooltipTrigger>
-                                            <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm bg-white text-dark shadow-lg border top-12 relative overflow-y-auto">
+                                            <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm tracking-normal shadow-lg border top-12 relative overflow-y-auto">
                                                 {invoice.details}
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
                                     <TableCell>₹ {invoice.amount}</TableCell>
-                                    <TableCell><BsThreeDots className='h-5 w-5 cursor-pointer transition-all duration-100 active:scale-75' /> </TableCell>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <BsThreeDots className='h-5 w-5 cursor-pointer transition-all duration-100 active:scale-75' />
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent className="relative right-4 w-min">
+                                                <DropdownMenuLabel className="text-center text-zinc-500">Actions:</DropdownMenuLabel>
+                                                <DropdownMenuSeparator />
+                                                <EditEntryMoney />
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

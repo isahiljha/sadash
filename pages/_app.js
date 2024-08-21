@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { useState } from "react";
 import { Provider } from "react-redux";
 import mystore from "./store";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps }) {
               </main>
             </section>
           </section>
+          <Toaster/>
         </ThemeProvider>
       </Provider>
     </>

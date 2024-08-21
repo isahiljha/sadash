@@ -12,7 +12,7 @@ const initialState = {
 export const fetchInvoiceData = createAsyncThunk('user/fetchInvoiceData', async (page, limit) => {
     
     const myToken = 'eyJhbGlKI6IkpvaG4gRG9lNiIsInR5cCI6IkpXVCJ9_eyJzdWIIk6yJV_a4fwpMeJf36POciOiJxwRJSMeKKF2QTY3OiwiaWF0IjoxNTE2MjM5MDIyfQ_Sf1iOiIxMjM0NTdQssw5c';
-    const dynamicUrl = 'https://silver-chough-461551.hostingersite.com/api/addwealthentry.php';
+    const dynamicUrl = 'https://silver-chough-461551.hostingersite.com/api/fetchMoneyentry.php';
 
         // Check if pagination is provided
         if (page !== undefined && limit !== undefined) {
