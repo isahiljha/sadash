@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { DivButton } from "@/components/ui/divButton"
 import { Input } from "@/components/ui/input"
@@ -34,43 +34,53 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 
 const FilterData = ({ customFilter, setCustomFilter }) => {
-    const [fromDate, setFromDate] = useState(new Date())
-    const [toDate, setToDate] = useState(new Date())
-    const [fromOpen, setFromOpen] = useState(false)
-    const [toOpen, setToOpen] = useState(false)
+    const [fromDate, setFromDate] = useState(new Date());
+    const [toDate, setToDate] = useState(new Date());
+    const [fromOpen, setFromOpen] = useState(false);
+    const [toOpen, setToOpen] = useState(false);
     const [statusFilter, setStatusFilter] = useState(customFilter.statusVal);
-    const [priceRange, setPriceRange] = useState(customFilter.rangeVal.fromRange) // Default range
-    const [toPrice, setToPrice] = useState(customFilter.rangeVal.toRange) // Default range
+    const [priceRange, setPriceRange] = useState(customFilter.rangeVal.fromRange);
+    const [toPrice, setToPrice] = useState(customFilter.rangeVal.toRange);
+    const [tabPrice, setTabPrice] = useState(customFilter.rangeVal.type === 'slider' ? 'pricerange' : 'priceinput');
+    const [inpMinPrice, setInpMinPrice] = useState(null);
+    const [inpMaxPrice, setInpMaxPrice] = useState(null);
     const [sheetOpen, setSheetOpen] = useState(false);
-
-
     const [onFilterMode, setOnFilterMode] = useState({
         datefield: false,
         statusfield: false,
-        rangefield: false
-    })
+        rangefield: false,
+    });
+
+    // Sync local state with customFilter when it changes
+    useEffect(() => {
+        setFromDate(new Date(customFilter.dateVal.fromDate));
+        setToDate(new Date(customFilter.dateVal.toDate));
+        setStatusFilter(customFilter.statusVal);
+        setPriceRange(customFilter.rangeVal.fromRange);
+        setToPrice(customFilter.rangeVal.toRange);
+        setTabPrice(customFilter.rangeVal.type === 'slider' ? 'pricerange' : 'priceinput');
+    }, [customFilter]);
 
     const handleCheckboxFilter = (checked, fieldname) => {
         setOnFilterMode((prevFields) => ({
             ...prevFields,
             [fieldname]: checked,
-        }))
-    }
+        }));
+    };
 
     const handleFromDateSelect = (date) => {
-        setFromDate(date)
-        setFromOpen(false)
-    }
+        setFromDate(date);
+        setFromOpen(false);
+    };
 
     const handleToDateSelect = (date) => {
-        setToDate(date)
-        setToOpen(false)
-    }
+        setToDate(date);
+        setToOpen(false);
+    };
 
     const handlePriceChange = (newValue) => {
-        setPriceRange(newValue)
-    }
-
+        setPriceRange(newValue);
+    };
 
     const resetCustomFilter = () => {
         setCustomFilter({
@@ -80,16 +90,17 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
             },
             statusVal: 'all',
             rangeVal: {
+                type: 'slider',
                 fromRange: [458, 1000],
                 toRange: 2124,
             },
-        })
+        });
         setOnFilterMode({
             datefield: false,
             statusfield: false,
-            rangefield: false
-        })
-    }
+            rangefield: false,
+        });
+    };
 
     const applyCustomFilter = () => {
         setCustomFilter({
@@ -99,12 +110,14 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
             },
             statusVal: onFilterMode.statusfield ? statusFilter : customFilter.statusVal,
             rangeVal: {
-                fromRange: onFilterMode.rangefield ? priceRange : customFilter.rangeVal.fromRange,
-                toRange: onFilterMode.rangefield ? toPrice : customFilter.rangeVal.toRange,
+                type: tabPrice === 'pricerange' ? 'slider' : 'input',
+                fromRange: onFilterMode.rangefield ? (tabPrice === 'pricerange' ? priceRange : inpMinPrice) : customFilter.rangeVal.fromRange,
+                toRange: onFilterMode.rangefield ? (tabPrice === 'pricerange' ? toPrice : inpMaxPrice) : customFilter.rangeVal.toRange,
             },
-        })
+        });
         setSheetOpen(false);
-    }
+    };
+
 
     return (
         <Sheet defaultOpen={sheetOpen} onOpenChange={setSheetOpen} open={sheetOpen} >
@@ -215,7 +228,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
 
                 {/* ----------------------- Price Range -------------------- */}
                 <div className="grid w-full max-w-sm items-center gap-2 mt-5">
-                    <Tabs defaultValue="pricerange">
+                    <Tabs defaultValue={tabPrice} onValueChange={setTabPrice}>
                         <Label htmlFor="amount" className="text-base font-bold flex justify-between items-end -mb-2"> <div>
                             <Checkbox
                                 checked={onFilterMode.rangefield}
@@ -258,11 +271,19 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                         <TabsContent value="priceinput">
                             <div className="flex justify-between pt-2">
                                 <div className="grid w-full max-w-sm items-center gap-2">
-                                    <Input type="text" id="email" placeholder="Min ₹" />
+                                    <Input
+                                        disabled={!onFilterMode.rangefield}
+                                        value={inpMinPrice === null ? '' : inpMinPrice}
+                                        onChange={(e) => setInpMinPrice(e.target.value)}
+                                        type="number" id="email" placeholder=" ₹ Min" />
                                 </div>
                                 <CgArrowsExchangeAlt className="text-5xl mx-1.5" />
                                 <div className="grid w-full max-w-sm items-center gap-2">
-                                    <Input type="text" id="email" placeholder="Max ₹" />
+                                    <Input
+                                        disabled={!onFilterMode.rangefield}
+                                        value={inpMaxPrice === null ? '' : inpMaxPrice}
+                                        onChange={(e) => setInpMaxPrice(e.target.value)}
+                                        type="number" id="email" placeholder=" ₹ Max" />
                                 </div>
                             </div>
                         </TabsContent>

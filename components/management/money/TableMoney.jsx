@@ -19,6 +19,11 @@ import TbAssignFunc from './TbAssignFunc';
 import TbMoneyPaginate from './TbMoneyPaginate';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchInvoiceData } from "@/features/moneyManagement";
+import { Badge } from "@/components/ui/badge"
+import { RiCloseCircleFill } from "react-icons/ri";
+
+
+
 
 const TableMoney = () => {
     const mydispatch = useDispatch();
@@ -32,6 +37,7 @@ const TableMoney = () => {
         },
         statusVal: 'all',
         rangeVal: {
+            type: 'slider',
             fromRange: [458, 1000],
             toRange: 2124,
         },
@@ -46,8 +52,8 @@ const TableMoney = () => {
 
     useEffect(() => {
         if (searchQuery) {
-            setFilterData(
-                moneyData.filter(res =>
+            setFilterData(prevData =>
+                prevData.filter(res =>
                     res.name.toLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
                     res.details.toLowerCase().includes(searchQuery.toLocaleLowerCase())
                 )
@@ -58,19 +64,50 @@ const TableMoney = () => {
         }
 
         if (customFilter) {
-
             // --------------- custom date filter ------------------
-            if (customFilter.dateVal) {
-                const startDate = customFilter.dateVal.fromDate.toLocaleDateString('en-GB');
-                const endDate = customFilter.dateVal.toDate.toLocaleDateString('en-GB')
-                console.log(startDate, "<<-->>", endDate)
+            if (customFilter.dateVal.fromDate && customFilter.dateVal.toDate) {
+                const startDate = new Date(customFilter.dateVal.fromDate);
+                const endDate = new Date(customFilter.dateVal.toDate);
+
+                const defaultStartDate = startDate.toLocaleDateString('en-GB').replace(/\//g, '-');
+                const defaultEndDate = endDate.toLocaleDateString('en-GB').replace(/\//g, '-');
+                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+
+                setFilterData(prevData =>
+
+                    defaultStartDate === todayDate && defaultEndDate === todayDate ? prevData :
+
+                        prevData.filter(res => {
+                            const [day, month, year] = res.date.split('-');
+                            const resDate = new Date(`${year}-${month}-${day}`);
+
+                            return resDate >= startDate && resDate <= endDate;
+                        })
+                );
             }
-            // --------------- custom status filter ==== DONE=== ------------------
+
+            // --------------- custom status filter ------------------
             if (customFilter.statusVal) {
-                setFilterData(
-                    customFilter.statusVal === 'all' ? moneyData : moneyData.filter(res =>
+                setFilterData(prevData =>
+                    customFilter.statusVal === 'all' ? prevData : prevData.filter(res =>
                         res.status.toLowerCase().includes(customFilter.statusVal)
                     )
+                );
+            }
+            // --------------- custom price filter ------------------
+            if (customFilter.rangeVal.fromRange && customFilter.rangeVal.toRange) {
+                const startRange = customFilter.rangeVal.type === 'slider' ? customFilter.rangeVal.fromRange[0] : parseInt(customFilter.rangeVal.fromRange);
+                const endRange = customFilter.rangeVal.type === 'slider' ? customFilter.rangeVal.toRange[0] : parseInt(customFilter.rangeVal.toRange);
+                const rangeType = customFilter.rangeVal.type;
+
+                console.log("Start Range ->", startRange, "<---->", "End Range:", endRange, "<---->", "Type", rangeType)
+
+                setFilterData(prevData =>
+                    rangeType === 'slider' && startRange === 458 && endRange === undefined ? prevData :
+                        prevData.filter(res => {
+                            const amountNum = res.amount.replace(/,/g, '');
+                            return amountNum >= startRange && amountNum <= endRange
+                        })
                 )
             }
         }
@@ -94,43 +131,57 @@ const TableMoney = () => {
             </div>
 
             <div className='bg-white relative dark:bg-dark rounded-lg shadow-md w-full overflow-y-auto border-b-[12px] border-b-white'>
-                <Table className="h-[62vh] rounded-md">
-                    <TableHeader className="sticky top-0 h-12 shadow-md z-10">
-                        <TableRow className="bg-white hover:bg-white shadow-sm">
-                            <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
-                            <TableHead>S No.</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Details</TableHead>
-                            <TableHead>Amount</TableHead>
-                            <TableHead></TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {filterData.map((invoice, index) => (
-                            <TableRow key={index}>
-                                <TableCell className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
-                                <TableCell className="w-20 font-bold">{invoice.id}</TableCell>
-                                <TableCell>{invoice.name}</TableCell>
-                                <TableCell>{invoice.date}</TableCell>
-                                <TableCell>{invoice.status}</TableCell>
-                                <TooltipProvider>
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <TableCell className="w-[32%]">{invoice.details.length > 40 ? invoice.details.slice(0, 40) + "..." : invoice.details}</TableCell>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm bg-white text-dark shadow-lg border top-12 relative overflow-y-auto">
-                                            {invoice.details}
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                                <TableCell>₹ {invoice.amount}</TableCell>
-                                <TableCell><BsThreeDots className='h-5 w-5 cursor-pointer transition-all duration-100 active:scale-75' /> </TableCell>
+                {filterData.length > 1 ?
+                    <Table className="h-[62vh] rounded-md">
+                        <TableHeader className="sticky top-0 h-12 shadow-md z-10">
+                            <TableRow className="bg-white hover:bg-white shadow-sm">
+                                <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
+                                <TableHead>S No.</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Details</TableHead>
+                                <TableHead>Amount</TableHead>
+                                <TableHead></TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                        </TableHeader>
+                        <TableBody>
+                            {filterData.map((invoice, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
+                                    <TableCell className="w-20 font-bold">{invoice.id}</TableCell>
+                                    <TableCell>{invoice.name}</TableCell>
+                                    <TableCell>{invoice.date}</TableCell>
+                                    <TableCell>
+                                        <div className="flex justify-center">
+                                            {invoice.status === 'sended' && <Badge variant="destructive" className="">{invoice.status}</Badge>}
+                                            {invoice.status === 'received' && <Badge className="bg-green-500 hover:bg-green-400">{invoice.status}</Badge>}
+                                            {invoice.status === 'spent' && <Badge variant="outline" className="">{invoice.status}</Badge>}
+                                        </div>
+                                    </TableCell>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <TableCell className="w-[32%]">{invoice.details.length > 40 ? invoice.details.slice(0, 40) + "..." : invoice.details}</TableCell>
+                                            </TooltipTrigger>
+                                            <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm bg-white text-dark shadow-lg border top-12 relative overflow-y-auto">
+                                                {invoice.details}
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                    <TableCell>₹ {invoice.amount}</TableCell>
+                                    <TableCell><BsThreeDots className='h-5 w-5 cursor-pointer transition-all duration-100 active:scale-75' /> </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+
+                    </Table>
+                    :
+                    <div className="w-full flex-col flex items-center justify-end h-[61vh]">
+                        <img src='/Images/notfoundimg.png' className="w-80 z-10 object-cover animate-bounce" alt='not found image' />
+                        <h1 className="text-6xl drop-shadow-md absolute bottom-5 font-extrabold flex items-center ">N <RiCloseCircleFill className="inline-block mr-2 animate-spin h-10 w-10 text-red-500" />  Data Found</h1>
+                    </div>
+                }
             </div>
 
             <div className='mt-3 mb-3 w-full flex justify-between'>
