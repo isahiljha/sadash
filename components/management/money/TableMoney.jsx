@@ -30,7 +30,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import EditEntryMoney from "./assignFunc/EditEntryMoney";
+import { ImSpinner9 } from "react-icons/im";
 import { Button } from "@/components/ui/button";
+import { FaTrash } from "react-icons/fa";
 
 
 const TableMoney = () => {
@@ -122,8 +124,18 @@ const TableMoney = () => {
 
     }, [moneyData, searchQuery, customFilter])
 
+    const formatAmount = (value) => {
+        let numericValue = value.replace(/[^0-9]/g, "");
+        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      };
+
+
+
     if (invoiceLoading) {
-        return <div className="flex justify-center items-center h-[62vh]">Loading...</div>; // Show loader while loading
+        return <div className="flex flex-col gap-7 justify-center items-center h-[62vh]">
+            <ImSpinner9 className="h-16 w-16 animate-spin" />
+            <span className="animate-pulse text-3xl font-bold">Loading...</span>
+        </div>; // Show loader while loading
     }
 
     return (
@@ -146,7 +158,7 @@ const TableMoney = () => {
                                 <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
                                 <TableHead>S No.</TableHead>
                                 <TableHead>Name</TableHead>
-                                <TableHead className="w-24">Date</TableHead>
+                                <TableHead>Date</TableHead>
                                 <TableHead className="w-28">Status</TableHead>
                                 <TableHead>Details</TableHead>
                                 <TableHead>Amount</TableHead>
@@ -170,23 +182,26 @@ const TableMoney = () => {
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                <TableCell>{invoice.details.length > 66 ? invoice.details.slice(0, 66) + "..." : invoice.details}</TableCell>
+                                                <TableCell>{invoice.details.length > 56 ? invoice.details.slice(0, 56) + "..." : invoice.details}</TableCell>
                                             </TooltipTrigger>
                                             <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm tracking-normal shadow-lg border top-12 relative overflow-y-auto">
                                                 {invoice.details}
                                             </TooltipContent>
                                         </Tooltip>
                                     </TooltipProvider>
-                                    <TableCell>₹ {invoice.amount}</TableCell>
+                                    <TableCell>₹ {formatAmount(invoice.amount)}</TableCell>
                                     <TableCell>
                                         <DropdownMenu>
-                                            <DropdownMenuTrigger>
-                                                <BsThreeDots className='h-5 w-5 cursor-pointer transition-all duration-100 active:scale-75' />
+                                            <DropdownMenuTrigger className="transition-all duration-100 active:scale-75">
+                                                <BsThreeDots className='h-5 w-5 cursor-pointer' />
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent className="relative right-4 w-min">
                                                 <DropdownMenuLabel className="text-center text-zinc-500">Actions:</DropdownMenuLabel>
                                                 <DropdownMenuSeparator />
-                                                <EditEntryMoney />
+                                                <EditEntryMoney
+                                                invoiceData={invoice}
+                                                 />
+                                                <Button className="w-full hover:bg-red-100 active:bg-red-200 transition-all duration-100 active:scale-90 text-red-600 justify-normal" variant="ghosted"><FaTrash className='h-4 w-4 mr-1' /> Delete</Button>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

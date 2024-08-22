@@ -76,27 +76,44 @@ const AddEntry = () => {
         setAmount("")
         setDescription("")
 
-        toast({
-            title: "Uh oh! Something went wrong.",
-            description: "There was a problem with your request.",
-        })
-
     }
 
 
     const handleSave = async () => {
 
-        const formattedDate = format(transferDate, 'dd-MM-yyyy');
+        const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
 
-        const formData = {
-            name,
-            transferDate: formattedDate,
-            status,
-            amount,
-            description,
-        };
+        if (name && status && amount && description && transferDate.toLocaleDateString('en-GB').replace(/\//g, '-') != todayDate) {
 
-        console.log(formData);
+            const formattedDate = format(transferDate, 'dd-MM-yyyy');
+            const reConstructAmount = amount.replace(/,/g, '');
+
+            const formData = {
+                name,
+                transferDate: formattedDate,
+                status,
+                amount: reConstructAmount,
+                description,
+            };
+
+            console.log(formData);
+            toast({
+                toastType: "success",
+                title: "Data Sending ",
+                description: "Please wait while we process to send your data", transferDate,
+                duration: 1000,
+            })
+        }
+
+        else if (!name || !status || !amount || !description || transferDate.toLocaleDateString('en-GB').replace(/\//g, '-') == todayDate) {
+
+            toast({
+                toastType: "warning",
+                title: "Warning: Fill the Form",
+                description: "You have to fill all of the fields of the form.", transferDate,
+                duration: 1000,
+            })
+        }
 
         // const response = await fetch("https://silver-chough-461551.hostingersite.com/api/addMoneyEntry.php", {
         //     method: "POST",
@@ -169,9 +186,9 @@ const AddEntry = () => {
                                     <SelectValue placeholder="Choose a status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="sended"><div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-green-700" /> Sended</div></SelectItem>
+                                    <SelectItem value="sended"><div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-red-700" /> Sended</div></SelectItem>
                                     <SelectItem value="received"><div className="flex items-center gap-1"><GiReceiveMoney className="h-5 w-5 text-green-700" /> Received</div></SelectItem>
-                                    <SelectItem value="spent"><div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-green-700" /> Spent</div></SelectItem>
+                                    <SelectItem value="spent"><div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-zinc-700" /> Spent</div></SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -185,8 +202,10 @@ const AddEntry = () => {
                         <Textarea className="h-20" placeholder="Write message here" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
                     <div className="w-full flex justify-end gap-3">
-                        <Button onClick={resetFormData} className="transition-all duration-100 active:scale-90" variant="outline"><RxReset className="h-4 w-4 mr-1 -ms-1" /> Reset</Button>
-                        <Button className="transition-all duration-100 active:scale-90" onClick={handleSave}><IoIosSave className="h-5 w-5 mr-1 -ms-1" /> Save</Button>
+                        <Button
+                            disabled={!name && !status && !amount && !description && transferDate != new Date()}
+                            onClick={resetFormData} className="transition-all duration-100 active:scale-90 selection:hidden" variant="outline"><RxReset className="h-4 w-4 mr-1 -ms-1" /> Reset</Button>
+                        <Button className="transition-all duration-100 active:scale-90 bg-green-600 hover:bg-green-500" onClick={handleSave}><IoIosSave className="h-5 w-5 mr-1 -ms-1" /> Save</Button>
                     </div>
                 </div>
             </AlertDialogContent>
