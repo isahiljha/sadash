@@ -33,6 +33,9 @@ import { MdEditDocument } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { fetchInvoiceData } from "@/features/moneyManagement";
 import { format } from "date-fns";
+import { useToast } from "@/components/ui/use-toast";
+import { ImSpinner9 } from "react-icons/im";
+import { Badge } from "@/components/ui/badge";
 
 const EditEntryMoney = ({ invoiceData }) => {
 
@@ -42,20 +45,21 @@ const EditEntryMoney = ({ invoiceData }) => {
     return new Date(`${year}-${month}-${day}`);
   };
 
-  
+
   const formatAmount = (value) => {
     let numericValue = value.replace(/[^0-9]/g, "");
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-  
+
   const [editEntryModal, setEditEntryModal] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
   const [transferDate, setTransferDate] = useState(parseDate(invoiceData.date));
   const [name, setName] = useState(invoiceData.name);
   const [status, setStatus] = useState(invoiceData.status);
   const [amount, setAmount] = useState(formatAmount(invoiceData.amount));
   const [description, setDescription] = useState(invoiceData.details);
   const editDispach = useDispatch();
-
+  const { toast } = useToast();
 
 
   const secretKey = "eyJh_eyJzdWIIk6yJV_a4I6IOIjoxNTsK63OIyfQ_Sf1iOiIxMpMeJf3iwkpXVCJ9iJxwRJSMeKKF2QTYIE2MjM5MD6PjbGldQwciOssiIiaWF05c"; // Replace with your secret key
@@ -81,6 +85,7 @@ const EditEntryMoney = ({ invoiceData }) => {
   }
 
   const handleSave = async () => {
+    setEditLoading(true);
 
     const formattedDate = format(transferDate, 'dd-MM-yyyy');
     const reConstructAmount = amount.replace(/,/g, '');
@@ -95,7 +100,6 @@ const EditEntryMoney = ({ invoiceData }) => {
     };
 
     console.log(editFormData)
-
     const response = await fetch('https://silver-chough-461551.hostingersite.com/api/editMoneyEntry.php', {
       method: 'POST',
       headers: {
@@ -107,14 +111,24 @@ const EditEntryMoney = ({ invoiceData }) => {
 
     const result = await response.json();
     if (result.success) {
-
       editDispach(fetchInvoiceData());
       setEditEntryModal(false);
+      setEditLoading(false);
+      toast({
+        toastType: "success",
+        title: "Edited Successfully",
+        description: `${name}'s record is successfully edited. `,
+        duration: 1000,
+      })
     } else {
-      alert("Failed to update the record: " + result.message);
+      setEditLoading(false);
+      toast({
+        toastType: "error",
+        title: "Error updating record",
+        description: `Failed to update the record | Error:- ${result.message}. `,
+        duration: 1000,
+      })
     }
-
-
   };
 
   return (
@@ -131,7 +145,16 @@ const EditEntryMoney = ({ invoiceData }) => {
           </AlertDialogCancel>
 
           <div className="h-max w-full flex flex-col justify-start items-center pb-2 border-zinc-200 border-b mb-2">
-            <AlertDialogTitle className="text-3xl mt-1 font-extrabold text-zinc-800 mb-3">Edit Entry</AlertDialogTitle>
+            <div className="flex justify-between items-center w-full">
+              <div></div>
+              <AlertDialogTitle className="text-3xl mt-1 relative left-20 font-extrabold text-zinc-800 mb-3">Edit Entry</AlertDialogTitle>
+
+              {!editLoading ? <div className="mr-32"></div>: <Badge className="flex gap-2 justify-center items-center rounded-full relative -top-2 bg-yellow-500 text-dark">
+                <ImSpinner9 className="h-5 w-5 animate-spin" />
+                <span className="animate-pulse text-sm tracking-normal ">Please Wait...</span>
+              </Badge>}
+
+            </div>
             <AlertDialogDescription className="w-full px-12 text-center tracking-wide">
               Modify the fields below to update the record for the money flow tracking.
             </AlertDialogDescription>
