@@ -15,11 +15,21 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-
-
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { BsFillMenuButtonWideFill, BsMenuButtonWideFill } from "react-icons/bs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import Sidebar from "./Sidebar";
 
 
 export default function Header() {
@@ -48,8 +58,23 @@ export default function Header() {
   return (<>
     <div className="h-full flex justify-between items-end px-4 pb-2">
 
+      <div className="block md:hidden">
+        <Drawer direction="left" className="!shadow-none dark:!shadow-sm">
+          <DrawerTrigger asChild>
+            <BsMenuButtonWideFill className='scale-150 active:scale-125 transition-all duration-100 ms-1 flex md:hidden' />
+          </DrawerTrigger>
+          <DrawerContent className="inset-y-0 max-w-screen-sm m-0 rounded-none rounded-e-3xl w-[80vw] border-0 border-e-2 dark:!border-zinc-400">
+            <DrawerTitle className="hidden"></DrawerTitle>
+            <DrawerDescription className="hidden"></DrawerDescription>
+            <div
+              className="absolute top-72 -right-4 h-[100px] w-2 rounded-full bg-zinc-400" />
+            <Sidebar />
+          </DrawerContent>
+        </Drawer>
+      </div>
+
       {/* left part header */}
-      <div className="ms-5">
+      <div className="md:ms-5">
         <Breadcrumb>
           <BreadcrumbList>
 

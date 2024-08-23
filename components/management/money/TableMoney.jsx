@@ -33,11 +33,11 @@ import EditEntryMoney from "./assignFunc/EditEntryMoney";
 import { ImSpinner9 } from "react-icons/im";
 import { Button } from "@/components/ui/button";
 import { FaTrash } from "react-icons/fa";
+import DeleteEntry from "./assignFunc/DeleteEntry";
 
 
-const TableMoney = () => {
-    const mydispatch = useDispatch();
-    const { moneyData, invoiceLoading, error } = useSelector((state) => state.money)
+const TableMoney = ({moneyData, invoiceLoading}) => {
+
     const [searchQuery, setSearchQuery] = useState('');
     const [filterData, setFilterData] = useState([]);
     const [customFilter, setCustomFilter] = useState({
@@ -51,14 +51,8 @@ const TableMoney = () => {
             fromRange: [458, 1000],
             toRange: 2124,
         },
+        pageLimit: null,
     })
-
-    useEffect(() => {
-
-        mydispatch(fetchInvoiceData());
-
-    }, [mydispatch]);
-
 
     useEffect(() => {
         if (searchQuery) {
@@ -132,7 +126,7 @@ const TableMoney = () => {
 
 
     if (invoiceLoading) {
-        return <div className="flex flex-col gap-7 justify-center items-center h-[62vh]">
+        return <div className="flex flex-col gap-7 justify-center items-center h-[72vh]">
             <ImSpinner9 className="h-16 w-16 animate-spin" />
             <span className="animate-pulse text-3xl font-bold">Loading...</span>
         </div>; // Show loader while loading
@@ -140,7 +134,7 @@ const TableMoney = () => {
 
     return (
         <>
-            <div className='flex justify-between items-center px-2 my-3'>
+            <div className='flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-start md:items-center px-2 my-3'>
                 <TbAssignFunc
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
@@ -152,7 +146,7 @@ const TableMoney = () => {
 
             <div className='bg-white relative dark:bg-dark rounded-lg shadow-md w-full overflow-y-auto border-b-[12px] border-b-white'>
                 {filterData.length > 0 ?
-                    <Table className="h-[62vh] rounded-md">
+                    <Table className="h-[68vh] w-max md:w-auto rounded-md">
                         <TableHeader className="sticky top-0 h-12 shadow-md z-10">
                             <TableRow className="bg-white hover:bg-white shadow-sm">
                                 <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
@@ -201,7 +195,9 @@ const TableMoney = () => {
                                                 <EditEntryMoney
                                                 invoiceData={invoice}
                                                  />
-                                                <Button className="w-full hover:bg-red-100 active:bg-red-200 transition-all duration-100 active:scale-90 text-red-600 justify-normal" variant="ghosted"><FaTrash className='h-4 w-4 mr-1' /> Delete</Button>
+                                                 <DeleteEntry
+                                                 invoiceData={invoice}
+                                                 />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

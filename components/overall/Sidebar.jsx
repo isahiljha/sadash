@@ -119,8 +119,8 @@ const Sidebar = ({ sidebarState, toggleSidebar }) => {
           <span className='absolute left-16 text-2xl font-extrabold dark:text-white'>{!sidebarState && "Sadash"}</span>
         </div>
 
-        <div>
-          <GiBottomRight3dArrow onClick={() => toggleSidebar(!sidebarState)} className={`h-7 w-7 ${sidebarState ? 'rotate-[315deg] !left-3' : '-rotate-[225deg]'} bg-white dark:bg-zinc-800 dark:text-white p-1 rounded-full relative left-7 border dark:border-zinc-600 cursor-pointer active:scale-75 transition-all duration-500 active:shadow-md z-20`} />
+        <div className='hidden md:block'>
+          <GiBottomRight3dArrow onClick={() => toggleSidebar(!sidebarState)} className={`h-7 w-7 ${sidebarState ? 'rotate-[315deg] !left-3' : '-rotate-[225deg]'} bg-white dark:bg-zinc-800 dark:text-white p-1 rounded-full relative left-7 border dark:border-zinc-600 cursor-pointer active:scale-75 transition-all duration-500 active:shadow-md z-30`} />
         </div>
       </div>
 
@@ -254,13 +254,13 @@ const Sidebar = ({ sidebarState, toggleSidebar }) => {
           </Popover>
           }
           {!sidebarState && <Card className="tracking-normal shadow-none border-zinc-700 dark:bg-zinc-800 dark:shadow-lg dark:shadow-black">
-            <CardHeader className="p-2 pt-0 md:p-4">
+            <CardHeader className="py-3 px-4 md:pt-0 md:p-4">
               <CardTitle className="font-bold tracking-normal mb-2">🚀 Let's do work</CardTitle>
-              <CardDescription className="">
+              <CardDescription className="text-xs md:text-sm">
                 This website is for keeping track of datas In-Out , managing notes to boost my  productivity.
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+            <CardContent className="py-3 px-4 pt-0 md:p-4 md:pt-0">
               <Button size="sm" className="w-full gap-1 active:scale-90 transition-all duration-100 dark:bg-red-600 dark:hover:bg-red-700" variant="destructive">
                 <MdLogout className='h-4 w-4' /> Logout
               </Button>
