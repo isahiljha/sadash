@@ -18,7 +18,7 @@ import {
 import TbAssignFunc from './TbAssignFunc';
 import TbMoneyPaginate from './TbMoneyPaginate';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchInvoiceData } from "@/features/moneyManagement";
+import { fetchInvoiceData, fetchPaginatedInvoiceData } from "@/features/moneyManagement";
 import { Badge } from "@/components/ui/badge"
 import { RiCloseCircleFill } from "react-icons/ri";
 import {
@@ -36,10 +36,14 @@ import { FaTrash } from "react-icons/fa";
 import DeleteEntry from "./assignFunc/DeleteEntry";
 
 
-const TableMoney = ({moneyData, invoiceLoading}) => {
+const TableMoney = () => {
 
+    const mydispatch = useDispatch();
+    const { paginatedData, paginationLoading, error } = useSelector((state) => state.money)
     const [searchQuery, setSearchQuery] = useState('');
     const [filterData, setFilterData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 20;
     const [customFilter, setCustomFilter] = useState({
         dateVal: {
             fromDate: new Date(),
@@ -54,6 +58,15 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
         pageLimit: null,
     })
 
+
+
+    useEffect(() => {
+
+        mydispatch(fetchPaginatedInvoiceData({ page: 1, limit: 10 }));
+
+    }, [mydispatch, currentPage]);
+
+
     useEffect(() => {
         if (searchQuery) {
             setFilterData(prevData =>
@@ -64,7 +77,7 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
             )
         }
         else {
-            setFilterData(moneyData);
+            setFilterData(paginatedData);
         }
 
         if (customFilter) {
@@ -116,19 +129,19 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
             }
         }
 
-    }, [moneyData, searchQuery, customFilter])
+    }, [paginatedData, searchQuery, customFilter])
 
     const formatAmount = (value) => {
         let numericValue = value.replace(/[^0-9]/g, "");
         return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      };
+    };
 
 
 
-    if (invoiceLoading) {
+    if (paginationLoading) {
         return <div className="flex flex-col gap-7 justify-center items-center h-[72vh]">
             <ImSpinner9 className="h-16 w-16 animate-spin" />
-            <span className="animate-pulse text-3xl font-bold">Loading...</span>
+            <span className="animate-pulse md:text-3xl font-bold">Loading...</span>
         </div>; // Show loader while loading
     }
 
@@ -193,11 +206,11 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
                                                 <DropdownMenuLabel className="text-center text-zinc-500">Actions:</DropdownMenuLabel>
                                                 <DropdownMenuSeparator />
                                                 <EditEntryMoney
-                                                invoiceData={invoice}
-                                                 />
-                                                 <DeleteEntry
-                                                 invoiceData={invoice}
-                                                 />
+                                                    invoiceData={invoice}
+                                                />
+                                                <DeleteEntry
+                                                    invoiceData={invoice}
+                                                />
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
@@ -208,8 +221,8 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
                     </Table>
                     :
                     <div className="w-full flex-col flex items-center justify-end h-[61vh]">
-                        <img src='/Images/notfoundimg.png' className="w-80 z-10 object-cover animate-bounce" alt='not found image' />
-                        <h1 className="text-6xl drop-shadow-md absolute bottom-5 font-extrabold flex items-center ">N <RiCloseCircleFill className="inline-block mr-2 animate-spin h-10 w-10 text-red-500" />  Data Found</h1>
+                        <img src='/Images/notfoundimg.png' className="w-72 md:w-80 z-10 object-cover animate-bounce" alt='not found image' />
+                        <h1 className="text-4xl md:text-6xl drop-shadow-md absolute bottom-5 font-extrabold flex items-center ">N <RiCloseCircleFill className="inline-block mr-2 animate-spin h-10 w-10 text-red-500" />  Data Found</h1>
                     </div>
                 }
             </div>
@@ -217,7 +230,11 @@ const TableMoney = ({moneyData, invoiceLoading}) => {
             <div className='mt-3 mb-3 w-full flex justify-between'>
                 <TbMoneyPaginate
                     searchQuery={searchQuery}
-                    fullData={moneyData} />
+                    fullData={paginatedData}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    isLoading={paginationLoading}
+                />
             </div>
         </>
     );

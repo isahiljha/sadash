@@ -139,12 +139,12 @@ const AddEntry = () => {
             <AlertDialogTrigger asChild>
                 <Button className="transition-all duration-100 active:scale-90"><TbCopyPlusFilled className='h-4 w-4 mr-2' /> Add Entry</Button>
             </AlertDialogTrigger>
-            <AlertDialogContent className=" max-w-[51vw] flex flex-col">
-                <AlertDialogCancel className="absolute left-4 top-4 transition-all duration-100 active:scale-90 border-dark hover:bg-dark hover:text-white h-8 rounded-md px-3 text-xs"><IoMdArrowRoundBack className="h-4 w-4 mr-1 -ms-2" /> Back</AlertDialogCancel>
+            <AlertDialogContent className=" w-[95vw] md:max-w-[51vw] flex flex-col rounded-lg">
+                <AlertDialogCancel className="absolute left-1 top-0 h-7 md:w-auto md:left-4 md:top-4 transition-all duration-100 active:scale-90 border-dark hover:bg-dark hover:text-white md:h-8 rounded-md pe-2 md:pe-3 px-3 text-xs"><IoMdArrowRoundBack className="h-4 w-4 mr-1 -ms-2" /> Back</AlertDialogCancel>
 
                 <div className="h-max w-full flex flex-col justify-start items-center pb-2 border-zinc-200 border-b mb-2">
                     <AlertDialogTitle className="text-3xl mt-1 font-extrabold text-zinc-800 mb-3">Add New Entry</AlertDialogTitle>
-                    <AlertDialogDescription className="w-full px-12 text-center tracking-wide">
+                    <AlertDialogDescription className="w-full px-3 md:px-12 text-center tracking-wide">
                         Fill all of the given fields for adding a new record for the money flow tracking.
                     </AlertDialogDescription>
                 </div>

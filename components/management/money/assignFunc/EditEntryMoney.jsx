@@ -139,8 +139,8 @@ const EditEntryMoney = ({ invoiceData }) => {
             <MdEditDocument className='h-5 w-5 mr-1' /> Edit
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent className=" max-w-[51vw] flex flex-col">
-          <AlertDialogCancel className="absolute left-4 top-4 transition-all duration-100 active:scale-90 border-dark hover:bg-dark hover:text-white h-8 rounded-md px-3 text-xs">
+        <AlertDialogContent className="w-[95vw] md:max-w-[51vw] flex flex-col rounded-lg">
+          <AlertDialogCancel className="absolute left-1 top-0 h-7 md:w-auto md:left-4 md:top-4 transition-all duration-100 active:scale-90 border-dark hover:bg-dark hover:text-white md:h-8 rounded-md pe-2 md:pe-3 px-3 text-xs">
             <IoMdArrowRoundBack className="h-4 w-4 mr-1 -ms-2" /> Back
           </AlertDialogCancel>
 
@@ -155,7 +155,7 @@ const EditEntryMoney = ({ invoiceData }) => {
               </Badge>}
 
             </div>
-            <AlertDialogDescription className="w-full px-12 text-center tracking-wide">
+            <AlertDialogDescription className="w-full px-3 md:px-12 text-center tracking-wide">
               Modify the fields below to update the record for the money flow tracking.
             </AlertDialogDescription>
           </div>

@@ -23,9 +23,9 @@ const HomeChart = () => {
     return (
         <>
 
-            <section className="flex gap-7">
+            <section className="flex gap-7 md:flex-nowrap flex-wrap">
                 {/* =============== Chart 1 (pie) ================= */}
-                <Card className="w-1/3 shadow-lg">
+                <Card className="md:w-1/3 shadow-lg w-full">
                     <CardContent className="flex gap-4 p-4">
                         <div className="grid items-center">
                             <div className="grid flex-1 auto-rows-min gap-1">
@@ -121,7 +121,7 @@ const HomeChart = () => {
 
 
                 {/* =============== Chart 2 (bar) ================= */}
-                <Card className="w-1/3 overflow-hidden">
+                <Card className="md:w-1/3 overflow-hidden">
                     <CardHeader className="space-y-0 pb-0">
                         <CardDescription>Time in Bed</CardDescription>
                         <CardTitle className="flex items-baseline gap-1 text-4xl tabular-nums">
@@ -272,7 +272,7 @@ const HomeChart = () => {
 
 
                 {/* =============== Chart 3 (bar) ================= */}
-                <Card className="w-1/3">
+                <Card className="w-full md:w-1/3">
                     <CardContent className="flex gap-4 p-4 pb-2">
                         <ChartContainer
                             config={{

@@ -17,7 +17,7 @@ const TbAssignFunc = ({ searchQuery, setSearchQuery, filterData, customFilter, s
                     onChange={(e) => setSearchQuery(e.target.value)}
                     type="search"
                     placeholder="Enter Name or Details..."
-                    className="w-full h-10 rounded-lg bg-background pl-9 md:w-[200px] lg:w-[336px]"
+                    className="w-[180px] h-10 rounded-lg bg-background pl-9 md:w-[200px] lg:w-[336px] text-xs focus-visible:text-sm md:text-sm"
                 />
                 {searchQuery && <RiCloseCircleFill className="absolute top-2 h-6 w-6  right-1.5 transition-all duration-100 active:scale-75 active:text-red-600 cursor-pointer" onClick={() => setSearchQuery('')} />}
             </div>

@@ -53,7 +53,7 @@ import { DivButton } from '../ui/divButton';
 
 
 
-const Sidebar = ({ sidebarState, toggleSidebar }) => {
+const Sidebar = ({ sidebarState, toggleSidebar , closeMobileDrawer }) => {
 
   const [isPortalOpen, setPortal] = useState(false);
   const { setLightTheme, setDarkTheme } = useContext(ThemeContext);
@@ -79,6 +79,9 @@ const Sidebar = ({ sidebarState, toggleSidebar }) => {
 
   const goToLink = (dynamicLink) => {
     router.push(`${dynamicLink}`, undefined, { shallow: true });
+    if (window.innerWidth <= 768) {
+      closeMobileDrawer();
+    }
   }
 
   useEffect(() => {

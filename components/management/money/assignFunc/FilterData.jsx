@@ -126,7 +126,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                     <IoFilterOutline className='h-4 w-4 mr-1' /> Filter
                 </Button>
             </SheetTrigger>
-            <SheetContent aria-describedby={undefined} >
+            <SheetContent aria-describedby={undefined} className="w-[85%] md:w-[40%] overflow-y-auto">
                 <SheetHeader className="border-b pb-1">
                     <SheetTitle className="text-2xl font-extrabold tracking-wide text-red-900">Filter By:</SheetTitle>
                 </SheetHeader>
@@ -291,14 +291,14 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 </div>
                 {/* ----------------------- Price Range  -------------------- */}
 
-                <div className="border-b mt-7 mb-6 pb-2">
+                <div className="border-b mt-4 md:mt-7 mb-6 pb-2">
                     <SheetTitle className="text-2xl font-extrabold tracking-wide text-red-900">Display By:</SheetTitle>
                 </div>
 
                 <div className="flex items-center gap-4">
                     <Label htmlFor="email" className="font-bold text-base w-max">No of Rows :</Label>
                     <Select>
-                        <SelectTrigger className="w-1/5">
+                        <SelectTrigger className="w-max md:w-1/5">
                             <SelectValue placeholder="20" />
                         </SelectTrigger>
                         <SelectContent>
@@ -311,19 +311,19 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                     </Select>
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-4 md:mt-6">
                     <Label htmlFor="email" className="font-bold text-base w-max">Columns :</Label>
                     <div className="mt-3 grid grid-cols-3 gap-7">
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> S No. </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> Name </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> Date </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> Status </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> Details </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div><Checkbox className="relative top-0.5 transition-all duration-100 active:scale-125 mr-1" /> Amount </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> S No. </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Name </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Date </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Status </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Details </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Amount </div></Label>
                     </div>
                 </div>
 
-                <div className="flex justify-end relative top-12 gap-4">
+                <div className="flex justify-end relative top-9 md:top-12 gap-4">
                     <SheetClose asChild>
                         <Button
                             disabled={!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield}
