@@ -5,8 +5,8 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { useState } from "react";
 import { Provider } from "react-redux";
-import mystore from "./store";
 import { Toaster } from "@/components/ui/toaster";
+import mystore from "@/store/store";
 
 const inter = Inter({
   subsets: ['latin'],

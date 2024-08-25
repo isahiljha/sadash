@@ -50,6 +50,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
         statusfield: false,
         rangefield: false,
     });
+    const [pageSize, setPageSize] = useState(customFilter.pageLimit);
 
     // Sync local state with customFilter when it changes
     useEffect(() => {
@@ -58,6 +59,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
         setStatusFilter(customFilter.statusVal);
         setPriceRange(customFilter.rangeVal.fromRange);
         setToPrice(customFilter.rangeVal.toRange);
+        setPageSize(customFilter.pageLimit)
         setTabPrice(customFilter.rangeVal.type === 'slider' ? 'pricerange' : 'priceinput');
     }, [customFilter]);
 
@@ -94,6 +96,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 fromRange: [458, 1000],
                 toRange: 2124,
             },
+            pageLimit: 20,
         });
         setOnFilterMode({
             datefield: false,
@@ -114,6 +117,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 fromRange: onFilterMode.rangefield ? (tabPrice === 'pricerange' ? priceRange : inpMinPrice) : customFilter.rangeVal.fromRange,
                 toRange: onFilterMode.rangefield ? (tabPrice === 'pricerange' ? toPrice : inpMaxPrice) : customFilter.rangeVal.toRange,
             },
+            pageLimit: pageSize,
         });
         setSheetOpen(false);
     };
@@ -126,7 +130,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                     <IoFilterOutline className='h-4 w-4 mr-1' /> Filter
                 </Button>
             </SheetTrigger>
-            <SheetContent aria-describedby={undefined} className="w-[85%] md:w-[40%] overflow-y-auto">
+            <SheetContent aria-describedby={undefined} className="w-[92%] md:w-[40%] overflow-y-auto">
                 <SheetHeader className="border-b pb-1">
                     <SheetTitle className="text-2xl font-extrabold tracking-wide text-red-900">Filter By:</SheetTitle>
                 </SheetHeader>
@@ -297,16 +301,16 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
 
                 <div className="flex items-center gap-4">
                     <Label htmlFor="email" className="font-bold text-base w-max">No of Rows :</Label>
-                    <Select>
+                    <Select value={pageSize} defaultValue={pageSize} onValueChange={setPageSize} >
                         <SelectTrigger className="w-max md:w-1/5">
-                            <SelectValue placeholder="20" />
+                            <SelectValue placeholder="Choose" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="10">10</SelectItem>
-                            <SelectItem value="20">20</SelectItem>
-                            <SelectItem value="30">30</SelectItem>
-                            <SelectItem value="40">40</SelectItem>
-                            <SelectItem value="50">50</SelectItem>
+                            <SelectItem value={10}>10</SelectItem>
+                            <SelectItem value={20}>20</SelectItem>
+                            <SelectItem value={30}>30</SelectItem>
+                            <SelectItem value={40}>40</SelectItem>
+                            <SelectItem value={50}>50</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>

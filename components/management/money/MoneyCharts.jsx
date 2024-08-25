@@ -61,6 +61,8 @@ const ChartsData = () => {
 
     }, [mydispatch]);
 
+    console.log("MoneyData: ",moneyData)
+
 
     const chartData = useMemo(() => transformData(moneyData), [moneyData]);
 
@@ -78,7 +80,7 @@ const ChartsData = () => {
             <section className="mt-4 mb-12">
                 <Card>
                     <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-                        <div className="flex flex-1 flex-col gap-1 px-6 pt-4">
+                        <div className="flex flex-1 flex-col gap-1 px-3 md:px-6 pt-4">
                             <CardTitle className="tracking-normal gap-2 w-max text-lg flex items-center">
                                 <GiTakeMyMoney className="h-8 w-8 -mr-1.5" />
                                 <strong className="-mr-1">Money Graph</strong>:-
@@ -100,7 +102,7 @@ const ChartsData = () => {
                                 </Select>
 
                             </CardTitle>
-                            <CardDescription className="tracking-wider pe-12 text-xs mt-1.5 mb-1">
+                            <CardDescription className="tracking-wider md:pe-12 text-xs mt-1.5 mb-1">
                                 Visual representation for the money flow tracking. Choose month range from the option for detailed analysis.
                             </CardDescription>
                         </div>
@@ -110,7 +112,7 @@ const ChartsData = () => {
                                     <button
                                         key={key}
                                         data-active={activeChart === key}
-                                        className={`relative flex flex-1 flex-col justify-center gap-1 border-t px-3 py-2 md:px-6 md:py-4 mt-4 md:mt-0 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 bg-gradient-to-tr transition-all duration-100 active:scale-90 
+                                        className={`relative flex flex-1 flex-col justify-center gap-1 border-t px-2 py-2 md:px-6 md:py-4 mt-4 md:mt-0 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 bg-gradient-to-tr transition-all duration-100 active:scale-90 
                                             ${activeChart === key && key === 'sendedMoney' && 'from-red-400 to-red-800 text-white'} 
                                             ${activeChart === key && key === 'recievedMoney' && 'from-green-400 to-green-800 text-white'} 
                                             ${activeChart === key && key === 'spentMoney' && 'from-zinc-400 to-zinc-800 text-white'} 

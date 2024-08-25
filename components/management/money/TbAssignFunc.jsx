@@ -6,7 +6,7 @@ import AddEntry from "./assignFunc/AddEntry";
 import ExportData from "./assignFunc/ExportData";
 import FilterData from "./assignFunc/FilterData";
 
-const TbAssignFunc = ({ searchQuery, setSearchQuery, filterData, customFilter, setCustomFilter }) => {
+const TbAssignFunc = ({ searchQuery, setSearchQuery, filterData, customFilter, setCustomFilter ,fullData }) => {
     return (<>
         {/* =========== Left Side Functions ============= */}
         <div className="flex items-center gap-4">
@@ -21,7 +21,7 @@ const TbAssignFunc = ({ searchQuery, setSearchQuery, filterData, customFilter, s
                 />
                 {searchQuery && <RiCloseCircleFill className="absolute top-2 h-6 w-6  right-1.5 transition-all duration-100 active:scale-75 active:text-red-600 cursor-pointer" onClick={() => setSearchQuery('')} />}
             </div>
-            {filterData.length > 0 && filterData.length < 47 && <div className="text-sm tracking-wide"> <span className={`tracking-normal mr-0.5 text-lg font-extrabold ${filterData.length == 0 ? 'text-red-500' : 'text-blue-600'}`}>{filterData.length}</span> Results Found.</div>}
+            {filterData.length > 0 && filterData.length < fullData.data.length && <div className="text-sm tracking-wide"> <span className={`tracking-normal mr-0.5 text-lg font-extrabold ${filterData.length == 0 ? 'text-red-500' : 'text-blue-600'}`}>{filterData.length}</span> Results Found.</div>}
             {filterData.length === 0 && <div className="text-sm tracking-wide"> <span className={`tracking-normal mr-0.5 text-lg font-extrabold ${filterData.length == 0 ? 'text-red-500' : 'text-blue-600'}`}>{filterData.length}</span> Results Found.</div>}
         </div>
         {/* =========== Left Side Functions ============= */}

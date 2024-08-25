@@ -68,7 +68,7 @@ export default function Header() {
           <DrawerTrigger asChild className='scale-150 active:scale-110 transition-all duration-100 ms-1 flex md:hidden'>
             <BsMenuButtonWideFill />
           </DrawerTrigger>
-          <DrawerContent className="inset-y-0 max-w-screen-sm m-0 rounded-none rounded-e-3xl w-[80vw] border-0 border-e-2 dark:!border-zinc-400">
+          <DrawerContent className="inset-y-0 max-w-screen-sm m-0 rounded-none rounded-e-3xl w-[85vw] border-0 border-e-2 dark:!border-zinc-400">
             <DrawerTitle className="hidden"></DrawerTitle>
             <DrawerDescription className="hidden"></DrawerDescription>
             <div

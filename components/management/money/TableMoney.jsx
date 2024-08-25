@@ -34,7 +34,11 @@ import { ImSpinner9 } from "react-icons/im";
 import { Button } from "@/components/ui/button";
 import { FaTrash } from "react-icons/fa";
 import DeleteEntry from "./assignFunc/DeleteEntry";
-
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 const TableMoney = () => {
 
@@ -43,7 +47,6 @@ const TableMoney = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterData, setFilterData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 20;
     const [customFilter, setCustomFilter] = useState({
         dateVal: {
             fromDate: new Date(),
@@ -55,16 +58,16 @@ const TableMoney = () => {
             fromRange: [458, 1000],
             toRange: 2124,
         },
-        pageLimit: null,
+        pageLimit: 20,
     })
 
 
 
     useEffect(() => {
 
-        mydispatch(fetchPaginatedInvoiceData({ page: 1, limit: 10 }));
+        mydispatch(fetchPaginatedInvoiceData({ page: currentPage, limit: customFilter.pageLimit }));
 
-    }, [mydispatch, currentPage]);
+    }, [mydispatch, currentPage, customFilter.pageLimit]);
 
 
     useEffect(() => {
@@ -77,7 +80,7 @@ const TableMoney = () => {
             )
         }
         else {
-            setFilterData(paginatedData);
+            setFilterData(paginatedData.data || []);
         }
 
         if (customFilter) {
@@ -117,7 +120,6 @@ const TableMoney = () => {
                 const endRange = customFilter.rangeVal.type === 'slider' ? customFilter.rangeVal.toRange[0] : parseInt(customFilter.rangeVal.toRange);
                 const rangeType = customFilter.rangeVal.type;
 
-                console.log("Start Range ->", startRange, "<---->", "End Range:", endRange, "<---->", "Type", rangeType)
 
                 setFilterData(prevData =>
                     rangeType === 'slider' && startRange === 458 && endRange === undefined ? prevData :
@@ -154,6 +156,7 @@ const TableMoney = () => {
                     filterData={filterData}
                     customFilter={customFilter}
                     setCustomFilter={setCustomFilter}
+                    fullData={paginatedData}
                 />
             </div>
 
@@ -186,16 +189,15 @@ const TableMoney = () => {
                                             {invoice.status === 'spent' && <Badge variant="outline" className="">{invoice.status}</Badge>}
                                         </div>
                                     </TableCell>
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <TableCell>{invoice.details.length > 56 ? invoice.details.slice(0, 56) + "..." : invoice.details}</TableCell>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="w-80 py-2 flex items-center justify-center text-sm tracking-normal shadow-lg border top-12 relative overflow-y-auto">
-                                                {invoice.details}
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
+                                    <TableCell>
+                                        <Popover>
+                                            <PopoverTrigger>
+                                        {invoice.details.length > 56 ? invoice.details.slice(0, 56) + "..." : invoice.details}
+                                                
+                                            </PopoverTrigger>
+                                            <PopoverContent className="bg-dark text-white">{invoice.details}</PopoverContent>
+                                        </Popover>
+                                    </TableCell>
                                     <TableCell>₹ {formatAmount(invoice.amount)}</TableCell>
                                     <TableCell>
                                         <DropdownMenu>
