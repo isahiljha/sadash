@@ -50,15 +50,16 @@ import {
 import { GiTakeMyMoney } from "react-icons/gi";
 import { useRouter } from 'next/router';
 import { DivButton } from '../ui/divButton';
+import { useAuth } from '@/context/AuthContent';
 
 
 
-const Sidebar = ({ sidebarState, toggleSidebar , closeMobileDrawer }) => {
+const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
 
   const [isPortalOpen, setPortal] = useState(false);
   const { setLightTheme, setDarkTheme } = useContext(ThemeContext);
   const [accordVal, setAccordVal] = useState('');
-
+  const { logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -248,7 +249,7 @@ const Sidebar = ({ sidebarState, toggleSidebar , closeMobileDrawer }) => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                  <Button size="sm" className="w-full gap-1 " variant="destructive">
+                  <Button onClick={() => { goToLink('/'); logout() }} size="sm" className="w-full gap-1 " variant="destructive">
                     <MdLogout className='h-4 w-4' /> Logout
                   </Button>
                 </CardContent>
@@ -264,7 +265,7 @@ const Sidebar = ({ sidebarState, toggleSidebar , closeMobileDrawer }) => {
               </CardDescription>
             </CardHeader>
             <CardContent className="py-3 px-4 pt-0 md:p-4 md:pt-0">
-              <Button size="sm" className="w-full gap-1 active:scale-90 transition-all duration-100 dark:bg-red-600 dark:hover:bg-red-700" variant="destructive">
+              <Button onClick={() => { goToLink('/'); logout() }}  size="sm" className="w-full gap-1 active:scale-90 transition-all duration-100 dark:bg-red-600 dark:hover:bg-red-700" variant="destructive">
                 <MdLogout className='h-4 w-4' /> Logout
               </Button>
             </CardContent>
