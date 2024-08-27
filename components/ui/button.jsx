@@ -27,6 +27,9 @@ const buttonVariants = cva(
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
       },
+      bg: {
+        themeBtn: 'bg-gradient-to-r from-[#ffdeb5] via-[#cf9b7a] to-[#0e90ac] text-white font-bold hover:bg-gradiant-to-l active:shadow-sm active:from-[#b4dfac] active:via-[#72a27a] active:to-[#0e90ac]'
+      },
     },
     defaultVariants: {
       variant: "default",
@@ -35,11 +38,11 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+const Button = React.forwardRef(({ className, variant, size, bg, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "button"
   return (
     (<Comp
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size,bg, className }))}
       ref={ref}
       {...props} />)
   );

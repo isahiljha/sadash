@@ -84,20 +84,20 @@ export default function Login() {
         }
     };
 
+    {/* #f0c9a1 */}
 
     return (
         <div className={`${inter.className} w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-screen selection:bg-violet-500 selection:text-white`}>
             {/* =============== left section =========== */}
-
             <div className="relative h-full flex-col bg-muted py-4 px-4 md:px-8 md:p-10 text-dark dark:text-white lg:flex dark:border-r font-semibold">
                 <div className="absolute inset-0 bg-login-light dark:bg-login-dark bg-cover brightness-95 bg-bottom dark:bg-right-top"></div>
-                <div className="relative z-20 flex items-center text-base md:text-lg">
-                    <img src="/Images/logo-nobg.png" height={58} width={58} className='z-10' alt="" /> <span className='relative top-1.5 text-3xl drop-shadow-lg shadow-black -left-1.5 text-white'>adash</span>
+                <div className="relative z-20 flex items-center text-base md:text-lg select-none">
+                    <img src="/Images/logo-nobg.png" height={58} width={58} className='z-10 drop-shadow-[5px_2px_7px_#fff]' alt="" /> <span className='relative top-1.5 text-3xl drop-shadow-[2px_2px_4px_black] -left-1.5 font-extrabold text-white'>adash</span>
                 </div>
                 <div className="relative z-20 mt-auto">
                     <blockquote className=" space-y-3 md:space-y-2">
-                        <p className="text-base mt-11 md:text-lg opacity-0 md:opacity-100 text-white">“This Website is under development process. Any suggestions regarding the development and improvment will be appreciated”</p>
-                        <footer className="text-sm text-zinc-400 selection:!bg-black selection:text-white">- Sahil Jha <span className='text-xs'>( owner )</span></footer>
+                        <p className="text-base mt-4 md:mt-11 md:text-base opacity-0 md:opacity-100 bg-cyan-950/25 backdrop-blur-sm text-[#f0c9a1] tracking-wide rounded-md py-3 px-4">“This Website is under development process. Any suggestions regarding the development and improvment will be appreciated”</p>
+                        <footer className="text-sm text-zinc-300 selection:!bg-black selection:text-white">- Sahil Jha <span className='text-xs'>( owner )</span></footer>
                     </blockquote>
                 </div>
             </div>
@@ -148,7 +148,7 @@ export default function Login() {
                                 </div>
                             </div>
                         </div>
-                        <Button className={`w-full h-9 md:h-10 text-sm md:text-base active:scale-90 transition-all duration-100 !text-white ${isloging ? 'bg-green-500' : 'bg-dark dark:bg-white'}`} onClick={handleSubmit}
+                        <Button bg="themeBtn" className={`w-full h-9 md:h-10 text-sm md:text-base active:scale-90 transition-all duration-100`} onClick={handleSubmit}
                             disabled={isloging ? true : false}
                         >
                             {isloging ?

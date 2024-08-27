@@ -112,19 +112,20 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className={`${sidebarState ? 'text-2xl' : 'text-3xl'}`}>🎯</span>
+                <div className="absolute z-20 flex items-center text-base md:text-lg select-none">
+                  <img src="/Images/logo-nobg.png" height={!sidebarState ? 51 : 45} width={!sidebarState ? 51 : 45} className={`${sidebarState && 'relative -left-2'}`} alt="" /> {!sidebarState && <span className='relative top-1.5 text-3xl  -left-1.5 font-extrabold'>adash</span>}
+                </div>
               </TooltipTrigger>
-              <TooltipContent side="right" className={`${sidebarState ? 'flex' : 'hidden'} left-1 relative p-0`}>
-                <div className='h-12 w-40 top-12 flex justify-end items-center text-2xl font-extrabold bg-gradient-to-l from-red-700 via-red-300 to-white text-white pe-7'>Sadash</div>
+              <TooltipContent side="right" className={`${sidebarState ? 'flex' : 'hidden'} -left-3 relative p-0`}>
+                <div className='h-12 w-40 top-12 flex justify-end items-center text-2xl font-extrabold bg-gradient-to-r from-[#ffdeb5] via-[#cf9b7a] to-[#0e90ac] text-white hover:bg-gradiant-to-l hover:shadow-lg active:shadow-sm active:from-[#b4dfac] active:via-[#72a27a] active:to-[#0e90ac] pe-7 select-none'>Sadash</div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
           {/* <TbTargetArrow  /> */}
-          <span className='absolute left-16 text-2xl font-extrabold dark:text-white'>{!sidebarState && "Sadash"}</span>
         </div>
 
         <div className='hidden md:block'>
-          <GiBottomRight3dArrow onClick={() => toggleSidebar(!sidebarState)} className={`h-7 w-7 ${sidebarState ? 'rotate-[315deg] !left-3' : '-rotate-[225deg]'} bg-white dark:bg-zinc-800 dark:text-white p-1 rounded-full relative left-7 border dark:border-zinc-600 cursor-pointer active:scale-75 transition-all duration-500 active:shadow-md z-30`} />
+          <GiBottomRight3dArrow onClick={() => toggleSidebar(!sidebarState)} className={`h-7 w-7 ${sidebarState ? 'rotate-[315deg] !left-7' : '-rotate-[225deg]'} bg-white dark:bg-zinc-800 dark:text-white p-1 rounded-full relative left-7 border dark:border-zinc-600 cursor-pointer active:scale-75 transition-all duration-500 active:shadow-md z-30`} />
         </div>
       </div>
 
@@ -136,9 +137,9 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="navbtn" onClick={() => goToLink('/')} className={`w-full ${sidebarState && 'ps-3'} ${isOnLink('/') ? 'bg-red-100 hover:bg-red-100 dark:bg-red-800/30' : 'bg-white dark:bg-dark'} flex justify-start gap-2`}>
-                  {isOnLink('/') && <MdSpaceDashboard className={`${isOnLink('/') && 'text-red-600'} h-5 w-5`} />}
-                  {!isOnLink('/') && <MdOutlineSpaceDashboard className={`${isOnLink('/') && 'text-red-600'} h-5 w-5`} />}
+                <Button bg={`${isOnLink('/') && 'themeBtn'}`} variant="navbtn" onClick={() => goToLink('/')} className={`w-full ${sidebarState && 'ps-3'} ${isOnLink('/') ? 'bg-red-100 hover:bg-red-100 dark:bg-red-800/30' : 'bg-white dark:bg-dark'} flex justify-start gap-2`}>
+                  {isOnLink('/') && <MdSpaceDashboard className={`${isOnLink('/') && 'text-teal-500'} h-5 w-5`} />}
+                  {!isOnLink('/') && <MdOutlineSpaceDashboard className={`${isOnLink('/') && 'text-teal-500'} h-5 w-5`} />}
                   {!sidebarState && "Dashboard"}
                 </Button>
               </TooltipTrigger>
@@ -163,11 +164,11 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
             {/* ----------------------------- menu accordion starts ------------------------- */}
             <Accordion value={accordVal} onValueChange={setAccordVal} type="single" collapsible>
               <AccordionItem value="management" className="border-b-0">
-                <AccordionTrigger className={`py-0 hover:no-underline data-[state=open]:border-b-2 rounded-md data-[state=open]:border-red-500`}>
+                <AccordionTrigger className={`py-0 hover:no-underline data-[state=open]:border-b-2 rounded-md data-[state=open]:border-teal-500`}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <DivButton variant="navbtn" className={`w-full ${sidebarState && 'ps-3 -mr-5'} bg-white shadow-none hover:shadow-sm flex justify-start gap-2`}>
-                        {accordVal && <BsClipboardDataFill className='h-5 w-5 text-red-600' />}
+                        {accordVal && <BsClipboardDataFill className='h-5 w-5 text-teal-500' />}
                         {!accordVal && <BsClipboardData className='h-5 w-5' />}
                         {!sidebarState && "Management"}</DivButton>
                     </TooltipTrigger>
@@ -180,8 +181,8 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
                 <AccordionContent className="py-2 ps-5">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <DivButton onClick={() => goToLink('/management/money')} variant="navbtn" className={`w-full ${sidebarState && 'px-1 -left-1 relative'} ${isOnLink('/management/money') ? 'bg-red-100 hover:bg-red-100 dark:bg-red-800/30' : 'bg-white dark:bg-dark'} shadow-none hover:shadow-sm flex justify-start gap-2`}  >
-                        <GiTakeMyMoney className={`${isOnLink('/management/money') && 'text-red-600'} h-5 w-5`} />
+                      <DivButton bg={`${isOnLink('/management/money') && 'themeBtn'}`} onClick={() => goToLink('/management/money')} variant="navbtn" className={`w-full ${sidebarState && 'px-1 -left-1 relative'} ${isOnLink('/management/money') ? '' : 'bg-white dark:bg-dark'} shadow-none hover:shadow-sm flex justify-start gap-2`}  >
+                        <GiTakeMyMoney className={`${isOnLink('/management/money') && 'text-teal-500'} h-5 w-5`} />
                         {!sidebarState && "Money"}
                       </DivButton>
                     </TooltipTrigger>
@@ -192,7 +193,7 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
 
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <DivButton onClick={() => goToLink('/management/work')} variant="navbtn" className={`w-full ${sidebarState && 'px-1 -left-1 relative'} ${isOnLink('/management/work') ? 'bg-red-100 hover:bg-red-100 dark:bg-red-800/30' : 'bg-white dark:bg-dark'} shadow-none hover:shadow-sm flex justify-start gap-2`}><MdWorkOutline className={`${isOnLink('/management/work') && 'text-red-600'} h-5 w-5`} /> {!sidebarState && "Work"}</DivButton>
+                      <DivButton bg={`${isOnLink('/management/work') && 'themeBtn'}`} onClick={() => goToLink('/management/work')} variant="navbtn" className={`w-full ${sidebarState && 'px-1 -left-1 relative'} ${isOnLink('/management/work') ? '' : 'bg-white dark:bg-dark'} shadow-none hover:shadow-sm flex justify-start gap-2`}><MdWorkOutline className={`${isOnLink('/management/work') && 'text-teal-500'} h-5 w-5`} /> {!sidebarState && "Work"}</DivButton>
                     </TooltipTrigger>
                     <TooltipContent side="right" className={`${sidebarState ? 'flex' : 'hidden'} left-1 relative`}>
                       <p>Work</p>
@@ -265,7 +266,7 @@ const Sidebar = ({ sidebarState, toggleSidebar, closeMobileDrawer }) => {
               </CardDescription>
             </CardHeader>
             <CardContent className="py-3 px-4 pt-0 md:p-4 md:pt-0">
-              <Button onClick={() => { goToLink('/'); logout() }}  size="sm" className="w-full gap-1 active:scale-90 transition-all duration-100 dark:bg-red-600 dark:hover:bg-red-700" variant="destructive">
+              <Button onClick={() => { goToLink('/'); logout() }} size="sm" className="w-full gap-1 active:scale-90 transition-all duration-100 dark:bg-red-600 dark:hover:bg-red-700" variant="destructive">
                 <MdLogout className='h-4 w-4' /> Logout
               </Button>
             </CardContent>
