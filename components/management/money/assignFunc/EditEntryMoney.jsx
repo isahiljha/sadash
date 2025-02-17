@@ -37,7 +37,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ImSpinner9 } from "react-icons/im";
 import { Badge } from "@/components/ui/badge";
 
-const EditEntryMoney = ({ invoiceData }) => {
+const EditEntryMoney = ({ invoiceData, setRefetchTable }) => {
 
   // Function to convert "DD-MM-YYYY" to Date object
   const parseDate = (dateString) => {
@@ -100,7 +100,7 @@ const EditEntryMoney = ({ invoiceData }) => {
     };
 
     console.log(editFormData)
-    const response = await fetch('https://silver-chough-461551.hostingersite.com/api/editMoneyEntry.php', {
+    const response = await fetch('https://gracee.in/api/editMoneyEntry.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -120,6 +120,7 @@ const EditEntryMoney = ({ invoiceData }) => {
         description: `${name}'s record is successfully edited. `,
         duration: 1000,
       })
+      setRefetchTable((prev) => prev + 1);
     } else {
       setEditLoading(false);
       toast({
@@ -203,9 +204,9 @@ const EditEntryMoney = ({ invoiceData }) => {
                     <SelectItem value="received">
                       <div className="flex items-center gap-1"><GiReceiveMoney className="h-5 w-5 text-green-700" /> Received</div>
                     </SelectItem>
-                    <SelectItem value="spent">
+                    {/* <SelectItem value="spent">
                       <div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-zinc-700" /> Spent</div>
-                    </SelectItem>
+                    </SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>

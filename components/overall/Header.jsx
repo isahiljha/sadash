@@ -109,7 +109,7 @@ export default function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer relative top-2">
             <Avatar className="h-9 w-9">
-              <AvatarImage src="https://sahiljha.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fapple-touch-icon.78b3e51f.png&w=64&q=75" className="select-none" />
+              <AvatarImage src="https://sahiljha.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fapple-touch-icon.78b3e51f.png&w=64&q=75" className="select-none" />
               <AvatarFallback>SJ</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

@@ -13,7 +13,7 @@ const initialState = {
 // fetch full data
 export const fetchInvoiceData = createAsyncThunk('user/fetchInvoiceData', async () => {
     const myToken = 'eyJhbGlKI6IkpvaG4gRG9lNiIsInR5cCI6IkpXVCJ9_eyJzdWIIk6yJV_a4fwpMeJf36POciOiJxwRJSMeKKF2QTY3OiwiaWF0IjoxNTE2MjM5MDIyfQ_Sf1iOiIxMjM0NTdQssw5c';
-    const response = await fetch('https://silver-chough-461551.hostingersite.com/api/fetchMoneyentry.php', {
+    const response = await fetch('https://gracee.in/api/fetchMoneyentry.php', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const fetchInvoiceData = createAsyncThunk('user/fetchInvoiceData', async 
 // fetch paginated data
 export const fetchPaginatedInvoiceData = createAsyncThunk('user/fetchPaginatedInvoiceData', async ({ page, limit }) => {
     const myToken = 'eyJhbGlKI6IkpvaG4gRG9lNiIsInR5cCI6IkpXVCJ9_eyJzdWIIk6yJV_a4fwpMeJf36POciOiJxwRJSMeKKF2QTY3OiwiaWF0IjoxNTE2MjM5MDIyfQ_Sf1iOiIxMjM0NTdQssw5c';
-    let url = 'https://silver-chough-461551.hostingersite.com/api/CustomfetchMoneyentry.php';
+    let url = 'https://gracee.in/api/CustomfetchMoneyentry.php';
 
     // Check if pagination is provided
     if (page !== undefined && limit !== undefined) {

@@ -213,17 +213,17 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                         </SelectTrigger>
                         <SelectContent >
                             <SelectItem value="all">
-                                <div className="flex items-center gap-1"><GiMoneyStack className="h-5 w-5 text-green-700" /> All</div>
+                                <div className="flex items-center gap-1"><GiMoneyStack className="h-5 w-5 text-blue-500" /> All</div>
                             </SelectItem>
                             <SelectItem value="sended">
-                                <div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-green-700" /> Sended</div>
+                                <div className="flex items-center gap-1"><GiPayMoney className="h-5 w-5 text-red-500" /> Sended</div>
                             </SelectItem>
                             <SelectItem value="received">
                                 <div className="flex items-center gap-1"><GiReceiveMoney className="h-5 w-5 text-green-700" /> Received</div>
                             </SelectItem>
-                            <SelectItem value="spent">
+                            {/* <SelectItem value="spent">
                                 <div className="flex items-center gap-1"><GiTakeMyMoney className="h-5 w-5 text-green-700" /> Spent</div>
-                            </SelectItem>
+                            </SelectItem> */}
                         </SelectContent>
                     </Select>
                 </div>

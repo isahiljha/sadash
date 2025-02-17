@@ -115,7 +115,7 @@ const AddEntry = () => {
             })
         }
 
-        // const response = await fetch("https://silver-chough-461551.hostingersite.com/api/addMoneyEntry.php", {
+        // const response = await fetch("https://gracee.in/api/addMoneyEntry.php", {
         //     method: "POST",
         //     headers: {
         //         "Content-Type": "application/json",

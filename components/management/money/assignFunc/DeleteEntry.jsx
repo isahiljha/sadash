@@ -8,7 +8,7 @@ import { ImSpinner9 } from 'react-icons/im'
 import { useDispatch } from 'react-redux'
 import { fetchInvoiceData } from '@/features/moneyManagement'
 
-const DeleteUser = ({ invoiceData }) => {
+const DeleteUser = ({ invoiceData, setRefetchTable }) => {
 
     const [isDeleting, setIsDeleting] = useState(false);
     const [closeDeleteModal, setCloseDeleteModal] = useState(false);
@@ -20,7 +20,7 @@ const DeleteUser = ({ invoiceData }) => {
     const deleteUser = async (userId) => {
         try {
             setIsDeleting(true);
-            await fetch('https://silver-chough-461551.hostingersite.com/api/deleteMoneyEntry.php', {
+            await fetch('https://gracee.in/api/deleteMoneyEntry.php', {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'Application/json',
@@ -43,6 +43,7 @@ const DeleteUser = ({ invoiceData }) => {
                             description: `${invoiceData.name}'s record is no longer exists in the server`,
                         });
                         deleteDispach(fetchInvoiceData());
+                        setRefetchTable((prev) => prev + 1);
                     }
                 })
 

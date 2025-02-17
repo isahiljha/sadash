@@ -39,6 +39,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { TbLoader } from "react-icons/tb";
 
 const TableMoney = () => {
 
@@ -47,6 +48,7 @@ const TableMoney = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterData, setFilterData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [refetchTable, setRefetchTable] = useState(1);
     const [customFilter, setCustomFilter] = useState({
         dateVal: {
             fromDate: new Date(),
@@ -67,7 +69,7 @@ const TableMoney = () => {
 
         mydispatch(fetchPaginatedInvoiceData({ page: currentPage, limit: customFilter.pageLimit }));
 
-    }, [mydispatch, currentPage, customFilter.pageLimit]);
+    }, [mydispatch, currentPage, customFilter.pageLimit, refetchTable]);
 
 
     useEffect(() => {
@@ -142,7 +144,7 @@ const TableMoney = () => {
 
     if (paginationLoading) {
         return <div className="flex flex-col gap-7 justify-center items-center h-[72vh]">
-            <ImSpinner9 className="h-16 w-16 animate-spin" />
+            <TbLoader className="h-16 w-16 animate-spin" />
             <span className="animate-pulse md:text-3xl font-bold">Loading...</span>
         </div>; // Show loader while loading
     }
@@ -209,9 +211,11 @@ const TableMoney = () => {
                                                 <DropdownMenuSeparator />
                                                 <EditEntryMoney
                                                     invoiceData={invoice}
-                                                />
+                                                    setRefetchTable={setRefetchTable}
+                                                    />
                                                 <DeleteEntry
                                                     invoiceData={invoice}
+                                                    setRefetchTable={setRefetchTable}
                                                 />
                                             </DropdownMenuContent>
                                         </DropdownMenu>

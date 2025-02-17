@@ -38,3 +38,12 @@
   ::-webkit-search-cancel-button{
     display: none;
   }
+
+  html{
+    scroll-behavior: smooth !important;
+  }
+  .tabular-nums:before {
+    content: "₹";
+    font-weight: 700;
+    margin-right: 2px!important;
+}
