@@ -30,6 +30,7 @@ import {
 import { GiMoneyStack, GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
+import { GoDotFill } from "react-icons/go";
 
 
 
@@ -51,6 +52,7 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
         rangefield: false,
     });
     const [pageSize, setPageSize] = useState(customFilter.pageLimit);
+    const [filterColumns, setFilterColumns] = useState(customFilter.columnNames);
 
     // Sync local state with customFilter when it changes
     useEffect(() => {
@@ -60,7 +62,9 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
         setPriceRange(customFilter.rangeVal.fromRange);
         setToPrice(customFilter.rangeVal.toRange);
         setPageSize(customFilter.pageLimit)
+        setFilterColumns(customFilter.columnNames)
         setTabPrice(customFilter.rangeVal.type === 'slider' ? 'pricerange' : 'priceinput');
+
     }, [customFilter]);
 
     const handleCheckboxFilter = (checked, fieldname) => {
@@ -96,7 +100,15 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 fromRange: [458, 1000],
                 toRange: 2124,
             },
-            pageLimit: 20,
+            pageLimit: 50,
+            columnNames: {
+                sno: true,
+                name: true,
+                date: true,
+                status: true,
+                details: true,
+                amount: true,
+            }
         });
         setOnFilterMode({
             datefield: false,
@@ -118,16 +130,27 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 toRange: onFilterMode.rangefield ? (tabPrice === 'pricerange' ? toPrice : inpMaxPrice) : customFilter.rangeVal.toRange,
             },
             pageLimit: pageSize,
+            columnNames: filterColumns,
         });
         setSheetOpen(false);
     };
 
 
+    const handleColumnFilters = (names) => {
+        setFilterColumns(prev => ({
+            ...prev,
+            [names]: prev[names] === false ? true : false,
+        })
+        )
+    }
+    const columnActive = Object.values(filterColumns).includes(false);
+
     return (
         <Sheet defaultOpen={sheetOpen} onOpenChange={setSheetOpen} open={sheetOpen} >
             <SheetTrigger asChild>
-                <Button variant="outline" className="transition-all duration-100 active:scale-90">
+                <Button variant="outline" className="transition-all duration-100 active:scale-90 relative">
                     <IoFilterOutline className='h-4 w-4 mr-1' /> Filter
+                    {(onFilterMode.datefield || onFilterMode.rangefield || onFilterMode.statusfield) && <GoDotFill className="h-3.5 w-3h-3.5 absolute -top-1 -right-1 bg-red-500 text-red-200 rounded-full animate-bounce" />}
                 </Button>
             </SheetTrigger>
             <SheetContent aria-describedby={undefined} className="w-[92%] md:w-[40%] overflow-y-auto">
@@ -295,8 +318,8 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 </div>
                 {/* ----------------------- Price Range  -------------------- */}
 
-                <div className="border-b mt-4 md:mt-7 mb-6 pb-2">
-                    <SheetTitle className="text-2xl font-extrabold tracking-wide text-red-900">Display By:</SheetTitle>
+                <div className="border-b mt-11 mb-6 pb-2">
+                    <SheetTitle className="text-2xl font-extrabold tracking-wide text-red-900 text-center md:text-left">Display By:</SheetTitle>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -307,10 +330,10 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value={10}>10</SelectItem>
-                            <SelectItem value={20}>20</SelectItem>
-                            <SelectItem value={30}>30</SelectItem>
-                            <SelectItem value={40}>40</SelectItem>
                             <SelectItem value={50}>50</SelectItem>
+                            <SelectItem value={100}>100</SelectItem>
+                            <SelectItem value={250}>250</SelectItem>
+                            <SelectItem value={500}>500</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -318,25 +341,25 @@ const FilterData = ({ customFilter, setCustomFilter }) => {
                 <div className="mt-4 md:mt-6">
                     <Label htmlFor="email" className="font-bold text-base w-max">Columns :</Label>
                     <div className="mt-3 grid grid-cols-3 gap-7">
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> S No. </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Name </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Date </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Status </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Details </div></Label>
-                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" /> Amount </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('sno')} checked={filterColumns.sno} defaultChecked={filterColumns.sno} /> S No. </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('name')} checked={filterColumns.name} defaultChecked={filterColumns.name} /> Name </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('date')} checked={filterColumns.date} defaultChecked={filterColumns.date} /> Date </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('status')} checked={filterColumns.status} defaultChecked={filterColumns.status} /> Status </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('details')} checked={filterColumns.details} defaultChecked={filterColumns.details} /> Details </div></Label>
+                        <Label htmlFor="amount" className="flex justify-between items-end -mb-2"> <div className="flex items-end gap-1"><Checkbox className="relative transition-all duration-100 active:scale-125" onCheckedChange={() => handleColumnFilters('amount')} checked={filterColumns.amount} defaultChecked={filterColumns.amount} /> Amount </div></Label>
                     </div>
                 </div>
 
                 <div className="flex justify-end relative top-9 md:top-12 gap-4">
                     <SheetClose asChild>
                         <Button
-                            disabled={!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield}
+                            disabled={!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield && pageSize == customFilter.pageLimit && !columnActive}
                             onClick={resetCustomFilter}
                             variant="outline"
                             className={` ${!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield && 'select-none'} uppercase transition-all duration-100 active:scale-90`} >Reset</Button>
                     </SheetClose>
                     <Button
-                        disabled={!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield}
+                        disabled={!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield && pageSize == customFilter.pageLimit && !columnActive}
                         onClick={applyCustomFilter}
                         className={`${!onFilterMode.datefield && !onFilterMode.rangefield && !onFilterMode.statusfield && 'select-none'} uppercase transition-all duration-100 active:scale-90 bg-red-600 active:bg-blue-500`} >Apply</Button>
                 </div>

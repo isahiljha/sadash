@@ -97,8 +97,8 @@ const ChartsData = () => {
             <section className="mt-4 mb-12">
                 <Card className="shadow-none">
                     <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-                        <div className="flex flex-1 flex-col justify-center gap-1 px-3 md:px-6 pt-2">
-                            <CardTitle className="tracking-normal gap-2 w-max text-lg flex items-center">
+                        <div className="flex flex-1 flex-col justify-center gap-1 px-3 md:px-6 pt-2 md:mt-0 mt-2">
+                            <CardTitle className="tracking-normal gap-2 md:w-max text-lg flex items-center justify-between w-full">
                                 <div className="flex flex-col gap-1 me-4 text-sm ">
                                     <Label className="text-xs -my-1 py-0">In Wallet:</Label>
                                     <div className="flex items-center justify-center gap-1">
@@ -135,7 +135,7 @@ const ChartsData = () => {
                                     <button
                                         key={key}
                                         data-active={activeChart === key}
-                                        className={`relative flex flex-1 flex-col justify-center gap-1 border-t px-2 py-2 md:px-6 md:py-4 mt-4 md:mt-0 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 bg-gradient-to-tr transition-all duration-100 active:scale-90 
+                                        className={`relative flex flex-1 flex-col justify-center gap-1 border-t px-3.5 py-2.5 md:px-6 md:py-4 mt-4 md:mt-0 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 bg-gradient-to-tr transition-all duration-100 active:scale-90 
                                             ${activeChart === key &&
                                             key === "sendedMoney" &&
                                             "from-red-400 to-red-800 text-white"

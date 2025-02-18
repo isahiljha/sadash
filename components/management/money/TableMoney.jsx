@@ -60,7 +60,15 @@ const TableMoney = () => {
             fromRange: [458, 1000],
             toRange: 2124,
         },
-        pageLimit: 20,
+        pageLimit: 50,
+        columnNames: {
+            sno: true,
+            name: true,
+            date: true,
+            status: true,
+            details: true,
+            amount: true,
+        }
     })
 
 
@@ -151,97 +159,99 @@ const TableMoney = () => {
 
     return (
         <>
-            <div className='flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-start md:items-center px-2 my-3'>
-                <TbAssignFunc
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    filterData={filterData}
-                    customFilter={customFilter}
-                    setCustomFilter={setCustomFilter}
-                    fullData={paginatedData}
-                />
-            </div>
+            <section>
+                <div className='flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-start md:items-center px-2 my-3'>
+                    <TbAssignFunc
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                        filterData={filterData}
+                        customFilter={customFilter}
+                        setCustomFilter={setCustomFilter}
+                        fullData={paginatedData}
+                    />
+                </div>
 
-            <div className='bg-white relative dark:bg-dark rounded-lg shadow-md w-full overflow-y-auto border-b-[12px] border-b-white'>
-                {filterData.length > 0 ?
-                    <Table className="h-[68vh] w-max md:w-auto rounded-md">
-                        <TableHeader className="sticky top-0 h-12 shadow-md z-10">
-                            <TableRow className="bg-white hover:bg-white shadow-sm">
-                                <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
-                                <TableHead>S No.</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead className="w-28">Status</TableHead>
-                                <TableHead>Details</TableHead>
-                                <TableHead>Amount</TableHead>
-                                <TableHead></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filterData.map((invoice, index) => (
-                                <TableRow key={index}>
-                                    <TableCell className=""><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
-                                    <TableCell className="font-bold">{invoice.id}</TableCell>
-                                    <TableCell>{invoice.name}</TableCell>
-                                    <TableCell className="">{invoice.date}</TableCell>
-                                    <TableCell>
-                                        <div className="flex justify-center">
-                                            {invoice.status === 'sended' && <Badge variant="destructive" className="">{invoice.status}</Badge>}
-                                            {invoice.status === 'received' && <Badge className="bg-green-500 hover:bg-green-400">{invoice.status}</Badge>}
-                                            {invoice.status === 'spent' && <Badge variant="outline" className="">{invoice.status}</Badge>}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Popover>
-                                            <PopoverTrigger>
-                                        {invoice.details.length > 56 ? invoice.details.slice(0, 56) + "..." : invoice.details}
-                                                
-                                            </PopoverTrigger>
-                                            <PopoverContent className="bg-dark text-white">{invoice.details}</PopoverContent>
-                                        </Popover>
-                                    </TableCell>
-                                    <TableCell>₹ {formatAmount(invoice.amount)}</TableCell>
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger className="transition-all duration-100 active:scale-75">
-                                                <BsThreeDots className='h-5 w-5 cursor-pointer' />
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent className="relative right-4 w-min">
-                                                <DropdownMenuLabel className="text-center text-zinc-500">Actions:</DropdownMenuLabel>
-                                                <DropdownMenuSeparator />
-                                                <EditEntryMoney
-                                                    invoiceData={invoice}
-                                                    setRefetchTable={setRefetchTable}
-                                                    />
-                                                <DeleteEntry
-                                                    invoiceData={invoice}
-                                                    setRefetchTable={setRefetchTable}
-                                                />
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
+                <div className='bg-white relative dark:bg-dark rounded-lg shadow-md w-full overflow-y-auto border-b-[12px] border-b-white'>
+                    {filterData.length > 0 ?
+                        <Table className="h-[68vh] w-max md:w-auto rounded-md">
+                            <TableHeader className="sticky top-0 h-12 shadow-md z-10">
+                                <TableRow className="bg-white hover:bg-white shadow-sm">
+                                    <TableHead className="w-10"><Checkbox className="transition-all duration-100 active:scale-125" /></TableHead>
+                                    {customFilter.columnNames.sno && <TableHead>S No.</TableHead>}
+                                    {customFilter.columnNames.name && <TableHead>Name</TableHead>}
+                                    {customFilter.columnNames.date && <TableHead>Date</TableHead>}
+                                    {customFilter.columnNames.status && <TableHead className="w-28">Status</TableHead>}
+                                    {customFilter.columnNames.details && <TableHead>Details</TableHead>}
+                                    {customFilter.columnNames.amount && <TableHead>Amount</TableHead>}
+                                    <TableHead></TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
+                            </TableHeader>
+                            <TableBody>
+                                {filterData.map((invoice, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className=""><Checkbox className="transition-all duration-100 active:scale-125" /></TableCell>
+                                        {customFilter.columnNames.sno && <TableCell className="font-bold">{invoice.id}</TableCell>}
+                                        {customFilter.columnNames.name && <TableCell>{invoice.name}</TableCell>}
+                                        {customFilter.columnNames.date && <TableCell className="">{invoice.date}</TableCell>}
+                                        {customFilter.columnNames.status && <TableCell>
+                                            <div className="flex justify-center">
+                                                {invoice.status === 'sended' && <Badge variant="destructive" className="">{invoice.status}</Badge>}
+                                                {invoice.status === 'received' && <Badge className="bg-green-500 hover:bg-green-400">{invoice.status}</Badge>}
+                                                {invoice.status === 'spent' && <Badge variant="outline" className="">{invoice.status}</Badge>}
+                                            </div>
+                                        </TableCell>}
+                                        {customFilter.columnNames.details && <TableCell>
+                                            <Popover>
+                                                <PopoverTrigger>
+                                                    {invoice.details.length > 56 ? invoice.details.slice(0, 56) + "..." : invoice.details}
 
-                    </Table>
-                    :
-                    <div className="w-full flex-col flex items-center justify-end h-[61vh]">
-                        <img src='/Images/notfoundimg.png' className="w-72 md:w-80 z-10 object-cover animate-bounce" alt='not found image' />
-                        <h1 className="text-4xl md:text-6xl drop-shadow-md absolute bottom-5 font-extrabold flex items-center ">N <RiCloseCircleFill className="inline-block mr-2 animate-spin h-10 w-10 text-red-500" />  Data Found</h1>
-                    </div>
-                }
-            </div>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="bg-dark text-white">{invoice.details}</PopoverContent>
+                                            </Popover>
+                                        </TableCell>}
+                                        {customFilter.columnNames.amount && <TableCell>₹ {formatAmount(invoice.amount)}</TableCell>}
+                                        <TableCell>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger className="transition-all duration-100 active:scale-75">
+                                                    <BsThreeDots className='h-5 w-5 cursor-pointer' />
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent className="relative right-4 w-min">
+                                                    <DropdownMenuLabel className="text-center text-zinc-500">Actions:</DropdownMenuLabel>
+                                                    <DropdownMenuSeparator />
+                                                    <EditEntryMoney
+                                                        invoiceData={invoice}
+                                                        setRefetchTable={setRefetchTable}
+                                                    />
+                                                    <DeleteEntry
+                                                        invoiceData={invoice}
+                                                        setRefetchTable={setRefetchTable}
+                                                    />
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
 
-            <div className='mt-3 mb-3 w-full flex justify-between'>
-                <TbMoneyPaginate
-                    searchQuery={searchQuery}
-                    fullData={paginatedData}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    isLoading={paginationLoading}
-                />
-            </div>
+                        </Table>
+                        :
+                        <div className="w-full flex-col flex items-center justify-end h-[61vh]">
+                            <img src='/Images/notfoundimg.png' className="w-72 md:w-80 z-10 object-cover animate-bounce" alt='not found image' />
+                            <h1 className="text-4xl md:text-6xl drop-shadow-md absolute bottom-5 font-extrabold flex items-center ">N <RiCloseCircleFill className="inline-block mr-2 animate-spin h-10 w-10 text-red-500" />  Data Found</h1>
+                        </div>
+                    }
+                </div>
+
+                <div className='mt-3 mb-3 w-full flex justify-between'>
+                    <TbMoneyPaginate
+                        searchQuery={searchQuery}
+                        fullData={paginatedData}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        isLoading={paginationLoading}
+                    />
+                </div>
+            </section>
         </>
     );
 };
