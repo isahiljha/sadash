@@ -7,14 +7,18 @@ export default function MoneyCallender() {
 
 
             <Tabs defaultValue="yearly" className="w-full">
-                <TabsList className="bg-zinc-200">
-                    <TabsTrigger value="weekly">Weekly</TabsTrigger>
-                    <TabsTrigger value="monthly">Monthly</TabsTrigger>
-                    <TabsTrigger value="yearly">Yearly</TabsTrigger>
+                <TabsList className="bg-zinc-200/70">
+                    <TabsTrigger value="weekly" className="transition-all duration-100 active:scale-75">Weekly</TabsTrigger>
+                    <TabsTrigger value="monthly" className="transition-all duration-100 active:scale-75">Monthly</TabsTrigger>
+                    <TabsTrigger value="yearly" className="transition-all duration-100 active:scale-75">Yearly</TabsTrigger>
                 </TabsList>
-                <TabsContent value="weekly">Change your password here.</TabsContent>
-                <TabsContent value="monthly">Change your password here.</TabsContent>
-                <TabsContent value="yearly" className="mt-5">
+                <TabsContent value="weekly" className="mt-5 !ring-0">
+                    <YearlyCallender />
+                </TabsContent>
+                <TabsContent value="monthly" className="mt-5 !ring-0">
+                    <YearlyCallender />
+                </TabsContent>
+                <TabsContent value="yearly" className="mt-5 !ring-0">
                     <YearlyCallender />
                 </TabsContent>
             </Tabs>
